@@ -37,7 +37,7 @@ services:
             POSTGRES_USER: ${DB_USERNAME:-postgres}
             POSTGRES_PASSWORD: ${DB_PASSWORD:-admin}
         volumes:
-            - ./postgresql/data:/var/lib/postgresql/data
+            - ./.docker/postgresql/data:/var/lib/postgresql/data
         ports:
             - "5488:5432"
         networks:
@@ -61,7 +61,7 @@ services:
             PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
             PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
         volumes:
-        - ./servers.json:/pgadmin4/servers.json
+        - ./.docker/servers.json:/pgadmin4/servers.json
 
 networks:
     laravel:
