@@ -27,19 +27,19 @@ services:
         networks:
             - laravel
 
-    # db mysql
+    # database
     db:
-        image: mysql:5.7.22
+        image: postgres
+        container_name: postgres
         restart: unless-stopped
         environment:
-            MYSQL_DATABASE: ${DB_DATABASE:-laravel}
-            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
-            MYSQL_PASSWORD: ${DB_PASSWORD:-userpass}
-            MYSQL_USER: ${DB_USERNAME:-username}
+            POSTGRES_DB: ${DB_DATABASE:-app_db}
+            POSTGRES_USER: ${DB_USERNAME:-postgres}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-admin}
         volumes:
-            - ./.docker/mysql/dbdata:/var/lib/mysql
+            - ./postgresql/data:/var/lib/postgresql/data
         ports:
-            - "3388:3306"
+            - "5488:5432"
         networks:
             - laravel
 
@@ -48,6 +48,20 @@ services:
         image: redis:latest
         networks:
             - laravel
+
+    # pgadmin
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: pgAdmin
+        ports:
+            - "5050:80"
+        depends_on:
+            - db
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+        volumes:
+        - ./servers.json:/pgadmin4/servers.json
 
 networks:
     laravel:
