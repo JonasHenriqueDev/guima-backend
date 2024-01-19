@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -15,16 +17,18 @@ use App\Http\Controllers\UserController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-
 Route::get('/', function () {
     return response()->json([
         'success' => true
     ]);
 });
 
-Route::get('/users', [UserController::class, 'index']);
-Route::post('/users', [UserController::class, 'store']);
+Route::prefix('auth')->group(function () {
+    Route::post('login', [LoginController::class, 'login']);
+    Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('register', [RegisterController::class, 'register']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
+});
