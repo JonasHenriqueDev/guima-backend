@@ -15,6 +15,7 @@ class UserController extends Controller
     public function __construct(
         protected User $repository,
     ) {
+        $this->middleware('auth:sanctum')->except(['store']);
     }
 
     public function index()
