@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('address');
             $table->rememberToken();
             $table->timestamps();
+            $table->morphs('profile');
         });
     }
 

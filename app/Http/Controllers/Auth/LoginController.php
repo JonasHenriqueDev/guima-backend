@@ -18,7 +18,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             return $this->response('Authorized', Response::HTTP_OK, [
-                'token' => $request->user()->createToken('invoice')->plainTextToken
+                'token' => $request->user()->createToken('admin_token')->plainTextToken
             ]);
         }
 

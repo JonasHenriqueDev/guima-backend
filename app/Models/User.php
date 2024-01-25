@@ -23,7 +23,8 @@ class User extends Authenticatable
         'password',
         'birth_date',
         'cpf',
-        'address'
+        'address',
+        'profile_type',
     ];
 
     /**
@@ -45,4 +46,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function profile()
+    {
+        return $this->morphTo();
+    }
+
+    public function treino()
+    {
+        return $this->hasMany(Treino::class);
+    }
+
+    public function dieta()
+    {
+        return $this->hasMany(Dieta::class);
+    }
 }
