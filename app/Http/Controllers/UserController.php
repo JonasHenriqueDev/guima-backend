@@ -31,13 +31,13 @@ class UserController extends Controller
         $data = $request->validated();
         //$data['password'] = bcrypt($data['password']);
 
-        $profileType = $data['profile_type'];
+        // $profileType = $data['profile_type'];
 
-        $allowedProfileTypes = ['professor', 'aluno'];
+        // $allowedProfileTypes = ['professor', 'aluno'];
 
-        if (!in_array($profileType, $allowedProfileTypes)) {
-            return $this->error('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
+        // if (!in_array($profileType, $allowedProfileTypes)) {
+        //     return $this->error('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
+        // }
 
         $profileType = 'aluno'; // OBS: The store user for this system is always a student
         $cpf = $data['cpf'];
@@ -45,11 +45,11 @@ class UserController extends Controller
         switch ($profileType) {
             case 'professor':
                 $professor = Professor::create();
-                $user = $professor->user()->create($data, ['password' => Hash::make($cpf)]);
+                $user = $professor->user()->create($data);
                 break;
             case 'aluno':
                 $aluno = Aluno::create();
-                $user = $aluno->user()->create($data);
+                $user = $aluno->user()->create($data + ['password' => Hash::make($cpf)]);
                 break;
             default:
                 return $this->error('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
