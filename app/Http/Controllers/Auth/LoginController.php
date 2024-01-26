@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,12 +15,31 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required']
+        ]);
 
-        if (Auth::attempt($credentials)) {
-            return $this->response('Authorized', Response::HTTP_OK, [
-                'token' => $request->user()->createToken('admin_token')->plainTextToken
+        $email = $request->email;
+
+        $profile_type = User::where('email', $email)->firstOrFail()->profile_type;
+
+        if (Auth::attempt($credentials) && $profile_type === 'App\Models\Aluno') {
+
+            $response = $this->response('Authorized', Response::HTTP_OK, [
+                'token' => $request->user()->createToken('aluno_token', ["aluno"])->plainTextToken
             ]);
+
+            return $response;
+        }
+
+        if (Auth::attempt($credentials) && $profile_type === 'App\Models\Professor') {
+
+            $response = $this->response('Authorized', Response::HTTP_OK, [
+                'token' => $request->user()->createToken('professor_token', ["*", "professor"])->plainTextToken
+            ]);
+
+            return $response;
         }
 
         return $this->error('Unauthorized', Response::HTTP_UNAUTHORIZED);

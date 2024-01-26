@@ -8,6 +8,7 @@ use App\Http\Requests\UserStoreUpdateFormRequest;
 use App\Models\Aluno;
 use App\Models\Professor;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {

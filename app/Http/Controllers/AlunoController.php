@@ -14,7 +14,7 @@ class AlunoController extends Controller
     public function __construct(
         protected Aluno $repository,
     ) {
-        $this->middleware('auth:sanctum')->except(['store']);
+        // $this->middleware('auth:sanctum')->except(['store']);
     }
 
     /**
