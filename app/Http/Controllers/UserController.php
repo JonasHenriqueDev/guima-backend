@@ -27,7 +27,7 @@ class UserController extends Controller
     public function store(UserStoreUpdateFormRequest $request)
     {
         $data = $request->validated();
-        $data['password'] = bcrypt($data['password']);
+        //$data['password'] = bcrypt($data['password']);
 
         $profileType = $data['profile_type'];
 
@@ -37,10 +37,13 @@ class UserController extends Controller
             return $this->error('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        $profileType = 'aluno'; // OBS: The store user for this system is always a student
+        $cpf = $data['cpf'];
+
         switch ($profileType) {
             case 'professor':
                 $professor = Professor::create();
-                $user = $professor->user()->create($data);
+                $user = $professor->user()->create($data, ['password' => bcrypt($cpf)]);
                 break;
             case 'aluno':
                 $aluno = Aluno::create();
