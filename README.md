@@ -2,7 +2,7 @@
 ## Stack utilizada
 
 
-**Back-end:** PHP, Laravel 10, Postgres, Redis
+**Back-end:** PHP, Laravel 10, Postgres, Redis, NGINX
 
 
 ## Rodando localmente
