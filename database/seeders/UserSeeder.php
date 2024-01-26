@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         //         'name' => $faker->name(),
         //         'email' => $faker->unique()->safeEmail(),
         //         'email_verified_at' => now(),
-        //         'password' => bcrypt('password'),
+        //         'password' => Hash::make('password'),
         //         'remember_token' => Str::random(10),
         //         'birth_date' => $faker->date(),
         //         'cpf' => $faker->unique()->cpf(),
