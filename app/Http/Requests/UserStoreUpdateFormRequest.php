@@ -22,7 +22,7 @@ class UserStoreUpdateFormRequest extends FormRequest
     public function rules(): array
     {
         if ($this->method() === 'PATCH') {
-            $rules['password'] = ['nullable', 'string', 'min:8', 'confirmed'];
+            // $rules['password'] = ['nullable', 'string', 'min:8', 'confirmed'];
 
             $rules['email'] = ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $this->id];
         } else {
@@ -32,7 +32,7 @@ class UserStoreUpdateFormRequest extends FormRequest
                 'cpf' => ['required', 'string', 'max:14'],
                 'address' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                // 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 'profile_type' => ['required', 'string', 'in:professor,aluno'],
             ];
         }
