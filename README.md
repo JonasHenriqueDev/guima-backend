@@ -29,3 +29,7 @@ Para rodar a aplicação execute:
 ```bash
   php artisan migrate:fresh --seed
 ```
+
+A aplicação estará rodando no servidor NGINX em: http://localhost:8989/
+
+Também existe um cliente postgres em: http://localhost:5050/
