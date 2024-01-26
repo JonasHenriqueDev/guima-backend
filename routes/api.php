@@ -27,8 +27,11 @@ Route::get('/', function () {
 });
 
 Route::prefix('auth')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('reset_password', [LoginController::class, 'resetPassword']);
+        Route::post('logout', [LoginController::class, 'logout']);
+    });
     Route::post('login', [LoginController::class, 'login']);
-    Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('register', [UserController::class, 'store']);
 });
 
