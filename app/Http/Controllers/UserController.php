@@ -9,6 +9,7 @@ use App\Models\Aluno;
 use App\Models\Professor;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -44,7 +45,7 @@ class UserController extends Controller
         switch ($profileType) {
             case 'professor':
                 $professor = Professor::create();
-                $user = $professor->user()->create($data, ['password' => bcrypt($cpf)]);
+                $user = $professor->user()->create($data, ['password' => Hash::make($cpf)]);
                 break;
             case 'aluno':
                 $aluno = Aluno::create();
@@ -72,7 +73,7 @@ class UserController extends Controller
         $data = $request->validated();
 
         if ($request->password) {
-            $data['password'] = bcrypt($data['password']);
+            $data['password'] = Hash::make($data['password']);
         }
 
         $user->update($data);
