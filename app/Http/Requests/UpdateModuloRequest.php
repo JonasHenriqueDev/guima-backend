@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTreinoRequest extends FormRequest
+class UpdateModuloRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,9 @@ class UpdateTreinoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'titulo' => 'required|string',
+            'descricao' => 'required|string',
+            'ordem' => 'required|integer',
         ];
     }
 }
