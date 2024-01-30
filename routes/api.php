@@ -4,10 +4,12 @@ use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\MeController;
+use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\ProfessorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VideoAulaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,9 +37,16 @@ Route::prefix('auth')->group(function () {
     Route::post('register', [UserController::class, 'store']);
 });
 
+
 Route::middleware(['auth:sanctum', 'ability:professor'])->group(function () {
-    Route::get('/me', [MeController::class, 'me']);
     Route::apiResource('users', UserController::class);
     Route::apiResource('professores', ProfessorController::class);
     Route::apiResource('alunos', AlunoController::class);
+    Route::apiResource('modulos', ModuloController::class);
+    Route::apiResource('video_aulas', VideoAulaController::class);
+});
+
+Route::middleware(['auth:sanctum', 'ability:aluno,professor'])->group(function () {
+    Route::get('/me', [MeController::class, 'me']);
+    // Route::get('/modulos', [ModuloController::class, 'index']);
 });
