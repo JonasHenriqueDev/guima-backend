@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\ProfessorController;
@@ -24,7 +22,7 @@ use App\Http\Controllers\VideoAulaController;
 
 Route::get('/', function () {
     return response()->json([
-        'success' => true
+        'ping' => 'pong',
     ]);
 });
 
