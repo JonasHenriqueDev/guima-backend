@@ -37,7 +37,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials) && $profile_type === 'App\Models\Professor') {
 
             $response = $this->response('Authorized', Response::HTTP_OK, [
-                'token' => $request->user()->createToken('professor_token', ["*", "professor"])->plainTextToken
+                'token' => $request->user()->createToken('professor_token')->plainTextToken
             ]);
 
             return $response;
