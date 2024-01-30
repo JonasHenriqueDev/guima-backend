@@ -19,9 +19,9 @@ class VideoAulaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(string $modulo_id)
+    public function index(string $modulo_id, string $submodulo_id)
     {
-        $aulas = VideoAula::where('modulo_id', $modulo_id)->paginate();
+        $aulas = VideoAula::where('submodulo_id', $submodulo_id)->paginate();
         return VideoAulaResource::collection($aulas);
     }
 

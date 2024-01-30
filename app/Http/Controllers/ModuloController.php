@@ -20,7 +20,7 @@ class ModuloController extends Controller
      */
     public function index()
     {
-        $modulos = Modulo::with('video_aulas')->paginate();
+        $modulos = Modulo::with('submodulos')->paginate();
         return ModuloResource::collection($modulos);
     }
 
@@ -41,7 +41,7 @@ class ModuloController extends Controller
      */
     public function show(string $id)
     {
-        $modulo = Modulo::findOrFail($id);
+        $modulo = Modulo::where('id', $id)->with('submodulos')->firstOrFail();
 
         return ModuloResource::make($modulo);
     }

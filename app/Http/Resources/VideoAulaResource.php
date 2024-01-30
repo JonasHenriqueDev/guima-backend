@@ -19,7 +19,7 @@ class VideoAulaResource extends JsonResource
             'titulo' => $this->titulo,
             'descricao' => $this->descricao,
             'url_id' => $this->url_id,
-            'modulo_id' => $this->modulo_id,
+            'submodulo_id' => $this->submodulo_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

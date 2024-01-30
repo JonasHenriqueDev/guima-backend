@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ModuloResource extends JsonResource
+class SubmoduloResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,7 +19,7 @@ class ModuloResource extends JsonResource
             'titulo' => $this->titulo,
             'descricao' => $this->descricao,
             'ordem' => $this->ordem,
-            'submodulos' => SubmoduloResource::collection($this->whenLoaded('submodulos')),
+            'video_aulas' => VideoAulaResource::collection($this->whenLoaded('video_aulas')),
         ];
     }
 }

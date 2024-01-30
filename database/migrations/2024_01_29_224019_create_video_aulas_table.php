@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('descricao');
             $table->string('url_id');
             $table->integer('ordem');
-            $table->constrained('submodulo_id');
+            $table->foreignId('submodulo_id')->constrained('submodulos');
         });
     }
 
