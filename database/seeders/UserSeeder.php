@@ -34,14 +34,27 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Administrador',
-            'email' => 'admin@admin.com',
+            'email' => 'admin@email.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => 'password',
             'remember_token' => Str::random(10),
             'birth_date' => '1990-01-01',
-            'cpf' => 'null',
+            'cpf' => '111.111.111-11',
             'address' => 'null',
-            'profile_type' => 'Professor',
+            'profile_type' => 'App\Models\Professor',
+            'profile_id' => 1,
+        ]);
+
+        User::create([
+            'name' => 'Aluno',
+            'email' => 'aluno@email.com',
+            'email_verified_at' => now(),
+            'password' => 'password',
+            'remember_token' => Str::random(10),
+            'birth_date' => '1990-01-01',
+            'cpf' => '111.111.111-12',
+            'address' => 'null',
+            'profile_type' => 'App\Models\Aluno',
             'profile_id' => 1,
         ]);
     }
