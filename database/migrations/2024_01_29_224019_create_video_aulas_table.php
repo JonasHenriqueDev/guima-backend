@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('titulo');
             $table->text('descricao');
-            $table->string('video_id');
+            $table->string('url_id');
             $table->integer('ordem');
             $table->foreignId('modulo_id')->constrained('modulos');
         });

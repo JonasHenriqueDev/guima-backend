@@ -25,7 +25,7 @@ class StoreVideoAulaRequest extends FormRequest
             'titulo' => 'required|string',
             'descricao' => 'required|string',
             'ordem' => 'required|integer',
-            'modulo_id' => 'required|exists:modulos,id',
+            'url_id' => 'required|string',
         ];
     }
 }

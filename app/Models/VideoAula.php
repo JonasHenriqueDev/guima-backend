@@ -13,8 +13,9 @@ class VideoAula extends Model
     protected $fillable = [
         'titulo',
         'descricao',
-        'video_id',
+        'url_id',
         'ordem',
+        'modulo_id',
     ];
 
     public function modulo()

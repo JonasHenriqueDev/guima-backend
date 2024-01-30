@@ -6,7 +6,6 @@ use App\Http\Requests\StoreModuloRequest;
 use App\Http\Requests\UpdateModuloRequest;
 use App\Http\Resources\ModuloResource;
 use App\Models\Modulo;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ModuloController extends Controller
@@ -21,7 +20,7 @@ class ModuloController extends Controller
      */
     public function index()
     {
-        $modulos = Modulo::with('video_aulas')->get();
+        $modulos = Modulo::with('video_aulas')->paginate();
         return ModuloResource::collection($modulos);
     }
 
@@ -44,7 +43,7 @@ class ModuloController extends Controller
     {
         $modulo = Modulo::findOrFail($id);
 
-        return new ModuloResource($modulo);
+        return ModuloResource::make($modulo);
     }
 
     /**
@@ -58,7 +57,7 @@ class ModuloController extends Controller
 
         $modulo->update($request);
 
-        return new ModuloResource($modulo);
+        return ModuloResource::make($modulo);
     }
 
     /**
