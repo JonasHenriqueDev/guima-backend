@@ -16,8 +16,8 @@ class Modulo extends Model
         'ordem',
     ];
 
-    public function video_aulas()
+    public function submodulos()
     {
-        return $this->hasMany(VideoAula::class);
+        return $this->hasMany(Submodulo::class);
     }
 }

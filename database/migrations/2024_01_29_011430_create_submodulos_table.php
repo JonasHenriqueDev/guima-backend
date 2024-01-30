@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('video_aulas', function (Blueprint $table) {
+        Schema::create('submodulos', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('titulo');
             $table->text('descricao');
-            $table->string('url_id');
             $table->integer('ordem');
-            $table->constrained('submodulo_id');
+            $table->constrained('modulo_id');
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('video_aulas');
+        Schema::dropIfExists('submodulos');
     }
 };

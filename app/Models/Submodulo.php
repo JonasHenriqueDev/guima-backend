@@ -6,20 +6,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 
-class VideoAula extends Model
+class Submodulo extends Model
 {
     use HasFactory, HasApiTokens;
 
     protected $fillable = [
         'titulo',
         'descricao',
-        'url_id',
         'ordem',
-        'submodulo_id',
+        'modulo_id',
     ];
 
     public function modulo()
     {
         return $this->belongsTo(Modulo::class);
     }
+
+    public function video_aulas()
+    {
+        return $this->hasMany(VideoAula::class);
+    }
+
+    
 }
