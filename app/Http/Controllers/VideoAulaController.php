@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreVideoAulaRequest;
-use App\Http\Requests\UpdateVideoAulaRequest;
-use App\Http\Resources\VideoAulaResource;
-use App\Models\VideoAula;
+use App\Http\Requests\StoreAulaRequest;
+use App\Http\Requests\UpdateAulaRequest;
+use App\Http\Resources\AulaResource;
+use App\Models\Aula;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class VideoAulaController extends Controller
+class AulaController extends Controller
 {
     public function __construct()
     {
@@ -21,22 +21,22 @@ class VideoAulaController extends Controller
      */
     public function index(string $modulo_id, string $submodulo_id)
     {
-        $aulas = VideoAula::where('submodulo_id', $submodulo_id)->paginate();
-        return VideoAulaResource::collection($aulas);
+        $aulas = Aula::where('submodulo_id', $submodulo_id)->paginate();
+        return AulaResource::collection($aulas);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreVideoAulaRequest $request, string $modulo_id)
+    public function store(StoreAulaRequest $request, string $modulo_id)
     {
         $data = $request->validated();
 
         $data['modulo_id'] = $modulo_id;
 
-        $aula = VideoAula::create($data);
+        $aula = Aula::create($data);
 
-        return VideoAulaResource::make($aula);
+        return AulaResource::make($aula);
     }
 
     /**
@@ -44,23 +44,23 @@ class VideoAulaController extends Controller
      */
     public function show(string $id)
     {
-        $aula = VideoAula::findOrFail($id);
+        $aula = Aula::findOrFail($id);
 
-        return VideoAulaResource::make($aula);
+        return AulaResource::make($aula);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateVideoAulaRequest $request, string $id)
+    public function update(UpdateAulaRequest $request, string $id)
     {
         $request = $request->validated();
 
-        $aula = VideoAula::findOrFail($id);
+        $aula = Aula::findOrFail($id);
 
         $aula->update($request);
 
-        return VideoAulaResource::make($aula);
+        return AulaResource::make($aula);
     }
 
     /**
@@ -68,7 +68,7 @@ class VideoAulaController extends Controller
      */
     public function destroy(string $id)
     {
-        $aula = VideoAula::findOrFail($id);
+        $aula = Aula::findOrFail($id);
 
         $aula->delete();
 

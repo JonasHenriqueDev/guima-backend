@@ -7,7 +7,7 @@ use App\Http\Controllers\ProfessorController;
 use App\Http\Controllers\SubmoduloController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\VideoAulaController;
+use App\Http\Controllers\AulaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,29 +42,32 @@ Route::middleware(['auth:sanctum', 'ability:professor'])->group(function () {
     Route::apiResource('professores', ProfessorController::class);
     Route::apiResource('users', UserController::class);
 
-    // Rotas para Módulos, Submódulos e Videoaulas
+    // Rotas para Módulos, Submódulos e aulas
     Route::prefix('modulos')->group(function () {
         Route::apiResource('/', ModuloController::class);
 
-        Route::apiResource('{moduloId}/submodulos', SubmoduloController::class);
+        Route::apiResource('{moduloId}/submodulos', SubmoduloController::class)->except(['show']);
         Route::get('{moduloId}/submodulos/{submoduloId}', [SubmoduloController::class, 'show']);
-        Route::apiResource('{moduloId}/submodulos/{submoduloId}/video_aulas', VideoAulaController::class);
+        Route::apiResource('{moduloId}/submodulos/{submoduloId}/aulas', AulaController::class);
     });
 });
 
 
-// Rotas acessíveis por alunos e professores
-Route::middleware(['auth:sanctum', 'ability:aluno,professor'])->group(function () {
+// Rotas acessíveis por qualquer usuario logado
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [MeController::class, 'me']);
 
-    // Rotas relacionadas a módulos
+    // Rotas relacionadas a módulos, submodulos e aulas
     Route::prefix('modulos')->group(function () {
         Route::get('/', [ModuloController::class, 'index']);
         Route::get('/{id}', [ModuloController::class, 'show']);
 
-        Route::prefix('{moduloId}/video_aulas')->group(function () {
-            Route::get('/', [VideoAulaController::class, 'index']);
-            Route::get('/{id}', [VideoAulaController::class, 'show']);
+        Route::get('{moduloId}/submodulos', [SubmoduloController::class, 'index']);
+        Route::get('{moduloId}/submodulos/{submoduloId}', [SubmoduloController::class, 'show']);
+
+        Route::prefix('{moduloId}/submodulos/{submoduloId}/aulas')->group(function () {
+            Route::get('/', [AulaController::class, 'index']);
+            Route::get('/{id}', [AulaController::class, 'show']);
         });
     });
 });

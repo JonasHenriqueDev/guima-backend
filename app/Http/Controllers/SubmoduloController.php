@@ -6,7 +6,7 @@ use App\Http\Requests\StoreSubmoduloRequest;
 use App\Http\Requests\UpdateSubmoduloRequest;
 use App\Http\Resources\SubmoduloResource;
 use App\Models\Submodulo;
-use App\Models\VideoAula;
+use App\Models\Aula;
 use Illuminate\Http\Response;
 
 class SubmoduloController extends Controller
@@ -17,7 +17,7 @@ class SubmoduloController extends Controller
     public function index(string $modulo_id)
     {
         $submodulos = Submodulo::where('modulo_id', $modulo_id)
-            ->with('video_aulas')
+            ->with('aulas')
             ->orderBy('ordem')
             ->paginate();
         return SubmoduloResource::collection($submodulos);
@@ -42,7 +42,7 @@ class SubmoduloController extends Controller
     {
         $submodulo = Submodulo::where('modulo_id', $moduloId)
         ->where('id', $submoduloId)
-        ->with('video_aulas')
+        ->with('aulas')
         ->firstOrFail();
 
         return SubmoduloResource::make($submodulo);

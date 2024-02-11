@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ModuloSeeder::class,
             SubmoduloSeeder::class,
-            VideoAulaSeeder::class,
+            AulaSeeder::class,
             AlunoSeeder::class,
             ProfessorSeeder::class,
         ]);

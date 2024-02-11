@@ -19,7 +19,7 @@ class SubmoduloResource extends JsonResource
             'titulo' => $this->titulo,
             'descricao' => $this->descricao,
             'ordem' => $this->ordem,
-            'video_aulas' => VideoAulaResource::collection($this->whenLoaded('video_aulas')),
+            'aulas' => AulaResource::collection($this->whenLoaded('aulas')),
         ];
     }
 }

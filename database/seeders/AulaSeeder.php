@@ -2,20 +2,20 @@
 
 namespace Database\Seeders;
 
-use App\Models\VideoAula;
+use App\Models\Aula;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class VideoAulaSeeder extends Seeder
+class AulaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        //videoaulas do submodulo treino de peito
+        //Aulass do submodulo treino de peito
 
-        VideoAula::create([
+        Aula::create([
             'titulo' => 'Supino Reto',
             'descricao' => 'Supino Reto',
             'url_id' => '1NvVUWJlY1s',
@@ -23,7 +23,7 @@ class VideoAulaSeeder extends Seeder
             'submodulo_id' => 2,
         ]);
 
-        VideoAula::create([
+        Aula::create([
             'titulo' => 'Supino Inclinado',
             'descricao' => 'Supino Inclinado',
             'url_id' => '1NvVUWJlY1s',
@@ -31,7 +31,7 @@ class VideoAulaSeeder extends Seeder
             'submodulo_id' => 2,
         ]);
 
-        VideoAula::create([
+        Aula::create([
             'titulo' => 'Supino Declinado',
             'descricao' => 'Supino Declinado',
             'url_id' => '1NvVUWJlY1s',
@@ -39,7 +39,7 @@ class VideoAulaSeeder extends Seeder
             'submodulo_id' => 2,
         ]);
 
-        VideoAula::create([
+        Aula::create([
             'titulo' => 'Crucifixo Reto',
             'descricao' => 'Crucifixo Reto',
             'url_id' => '1NvVUWJlY1s',

@@ -23,9 +23,9 @@ class Submodulo extends Model
         return $this->belongsTo(Modulo::class);
     }
 
-    public function video_aulas()
+    public function aulas()
     {
-        return $this->hasMany(VideoAula::class);
+        return $this->hasMany(Aula::class);
     }
 
     
