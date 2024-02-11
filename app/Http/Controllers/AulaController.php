@@ -35,7 +35,7 @@ class AulaController extends Controller
         $data['modulo_id'] = $modulo_id;
         $data['submodulo_id'] = $submodulo_id;
 
-        if(isset($request['img_reference'])) {
+        if (isset($request['img_reference'])) {
             $img = $request['img_reference'];
 
             $path = $img->store('images/aulas', 'public');
@@ -67,10 +67,10 @@ class AulaController extends Controller
 
         $aula = Aula::findOrFail($id);
 
-        if(isset($request['img_reference'])) {
+        if (isset($request['img_reference'])) {
             $img = $request['img_reference'];
 
-            $path = $img->store('images/aulas', 'public');
+            $path = $img->store('images', 'public');
 
             $request['img_reference'] = $path;
         }

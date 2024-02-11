@@ -62,13 +62,13 @@ class SubmoduloController extends Controller
     public function update(UpdateSubmoduloRequest $request, string $id)
     {
         $submodulo = SubModulo::findOrFail($id);
-
+        
         $request = $request->validated();
 
         if (isset($request['img_reference'])) {
             $img = $request['img_reference'];
 
-            $path = $img->store('images/aulas', 'public');
+            $path = $img->store('images', 'public');
 
             $request['img_reference'] = $path;
         }

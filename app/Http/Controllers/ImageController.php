@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\Image;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 
 class ImageController extends Controller
@@ -20,7 +21,7 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -29,7 +30,7 @@ class ImageController extends Controller
     public function show()
     {
         $reference = request()->query('reference');
-        return Image::get($reference);
+        return ImageService::get($reference);
     }
 
     /**

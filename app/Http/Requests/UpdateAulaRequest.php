@@ -22,11 +22,11 @@ class UpdateAulaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'titulo' => 'required|string',
+            'titulo' => 'string',
             'descricao' => 'string',
             'img_reference' => 'file|mimes:jpg,jpeg,png|max:2048',
-            'ordem' => 'required|integer',
-            'url_id' => 'required|string',
+            'ordem' => 'integer',
+            'url_id' => 'string',
         ];
     }
 }

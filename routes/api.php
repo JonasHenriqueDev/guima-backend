@@ -45,7 +45,11 @@ Route::middleware(['auth:sanctum', 'ability:professor'])->group(function () {
 
     // Rotas para Módulos, Submódulos e aulas
     Route::prefix('modulos')->group(function () {
-        Route::apiResource('/', ModuloController::class);
+        Route::post('/', [ModuloController::class, 'store']);
+        Route::put('{id}', [ModuloController::class, 'update']);
+        Route::patch('{id}', [ModuloController::class, 'update']);
+        Route::delete('{id}', [ModuloController::class, 'destroy']);
+
 
         Route::apiResource('{moduloId}/submodulos', SubmoduloController::class)->except(['show']);
         Route::get('{moduloId}/submodulos/{submoduloId}', [SubmoduloController::class, 'show']);

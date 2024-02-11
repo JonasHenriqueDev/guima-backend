@@ -22,10 +22,10 @@ class UpdateModuloRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'titulo' => 'required|string',
-            'descricao' => 'required|string',
+            'titulo' => 'string',
+            'descricao' => 'string',
             'img_reference' => 'file|mimes:jpg,jpeg,png|max:2048',
-            'ordem' => 'required|integer',
+            'ordem' => 'integer',
         ];
     }
 }
