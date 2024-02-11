@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateSubmoduloRequest;
 use App\Http\Resources\SubmoduloResource;
 use App\Models\Submodulo;
 use App\Models\VideoAula;
+use Illuminate\Http\Response;
 
 class SubmoduloController extends Controller
 {
@@ -15,7 +16,10 @@ class SubmoduloController extends Controller
      */
     public function index(string $modulo_id)
     {
-        $submodulos = Submodulo::where('modulo_id', $modulo_id)->with('video_aulas')->paginate();
+        $submodulos = Submodulo::where('modulo_id', $modulo_id)
+            ->with('video_aulas')
+            ->orderBy('ordem')
+            ->paginate();
         return SubmoduloResource::collection($submodulos);
     }
 
@@ -24,7 +28,11 @@ class SubmoduloController extends Controller
      */
     public function store(StoreSubmoduloRequest $request)
     {
-        //
+        $request = $request->validated();
+
+        $submodulo = Submodulo::create($request);
+
+        return SubmoduloResource::make($submodulo);
     }
 
     /**
@@ -32,7 +40,10 @@ class SubmoduloController extends Controller
      */
     public function show(string $moduloId, string $submoduloId)
     {
-        $submodulo = Submodulo::where('modulo_id', $moduloId)->where('id', $submoduloId)->with('video_aulas')->firstOrFail();
+        $submodulo = Submodulo::where('modulo_id', $moduloId)
+        ->where('id', $submoduloId)
+        ->with('video_aulas')
+        ->firstOrFail();
 
         return SubmoduloResource::make($submodulo);
     }
@@ -40,16 +51,26 @@ class SubmoduloController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSubmoduloRequest $request, Submodulo $submodulo)
+    public function update(UpdateSubmoduloRequest $request, string $id)
     {
-        //
+        $submodulo = SubModulo::findOrFail($id);
+
+        $request = $request->validated();
+
+        $submodulo->update($request);
+
+        return SubmoduloResource::make($submodulo);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Submodulo $submodulo)
+    public function destroy(string $id)
     {
-        //
+        $submodulo = SubModulo::findOrFail($id);
+
+        $submodulo->delete();
+
+        return $this->response('Submodulo deletado com sucesso.', Response::HTTP_NO_CONTENT);
     }
 }

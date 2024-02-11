@@ -39,7 +39,6 @@ Route::prefix('auth')->group(function () {
 
 // Rotas acessíveis apenas por professores
 Route::middleware(['auth:sanctum', 'ability:professor'])->group(function () {
-    // Rotas para Professores e Usuários
     Route::apiResource('professores', ProfessorController::class);
     Route::apiResource('users', UserController::class);
 
@@ -47,8 +46,7 @@ Route::middleware(['auth:sanctum', 'ability:professor'])->group(function () {
     Route::prefix('modulos')->group(function () {
         Route::apiResource('/', ModuloController::class);
 
-        // Rotas para Submódulos e Videoaulas usando parâmetros de URL
-        Route::get('{moduloId}/submodulos', [SubmoduloController::class, 'index']);
+        Route::apiResource('{moduloId}/submodulos', SubmoduloController::class);
         Route::get('{moduloId}/submodulos/{submoduloId}', [SubmoduloController::class, 'show']);
         Route::apiResource('{moduloId}/submodulos/{submoduloId}/video_aulas', VideoAulaController::class);
     });
