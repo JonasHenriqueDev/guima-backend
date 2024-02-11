@@ -30,6 +30,14 @@ class SubmoduloController extends Controller
     {
         $request = $request->validated();
 
+        if (isset($request['img_reference'])) {
+            $img = $request['img_reference'];
+
+            $path = $img->store('images/aulas', 'public');
+
+            $request['img_reference'] = $path;
+        }
+
         $submodulo = Submodulo::create($request);
 
         return SubmoduloResource::make($submodulo);
@@ -41,9 +49,9 @@ class SubmoduloController extends Controller
     public function show(string $moduloId, string $submoduloId)
     {
         $submodulo = Submodulo::where('modulo_id', $moduloId)
-        ->where('id', $submoduloId)
-        ->with('aulas')
-        ->firstOrFail();
+            ->where('id', $submoduloId)
+            ->with('aulas')
+            ->firstOrFail();
 
         return SubmoduloResource::make($submodulo);
     }
@@ -56,6 +64,14 @@ class SubmoduloController extends Controller
         $submodulo = SubModulo::findOrFail($id);
 
         $request = $request->validated();
+
+        if (isset($request['img_reference'])) {
+            $img = $request['img_reference'];
+
+            $path = $img->store('images/aulas', 'public');
+
+            $request['img_reference'] = $path;
+        }
 
         $submodulo->update($request);
 

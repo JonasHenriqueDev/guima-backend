@@ -31,6 +31,14 @@ class ModuloController extends Controller
     {
         $request = $request->validated();
 
+        if (isset($request['img_reference'])) {
+            $img = $request['img_reference'];
+
+            $path = $img->store('images/aulas', 'public');
+
+            $request['img_reference'] = $path;
+        }
+
         $modulo = Modulo::create($request);
 
         return ModuloResource::make($modulo);
@@ -54,6 +62,14 @@ class ModuloController extends Controller
         $modulo = Modulo::findOrFail($id);
 
         $request = $request->validated();
+
+        if (isset($request['img_reference'])) {
+            $img = $request['img_reference'];
+
+            $path = $img->store('images/aulas', 'public');
+
+            $request['img_reference'] = $path;
+        }
 
         $modulo->update($request);
 

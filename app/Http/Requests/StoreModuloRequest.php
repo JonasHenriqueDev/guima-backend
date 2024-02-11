@@ -25,7 +25,7 @@ class StoreModuloRequest extends FormRequest
             'titulo' => 'required|string',
             'descricao' => 'string',
             'ordem' => 'required|integer',
-            'img_reference' => 'string',
+            'img_reference' => 'file|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 }
