@@ -14,7 +14,7 @@ class Modulo extends Model
         'titulo',
         'descricao',
         'ordem',
-        'img_capa'
+        'img_reference'
     ];
 
     public function submodulos()

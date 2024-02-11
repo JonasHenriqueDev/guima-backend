@@ -14,7 +14,7 @@ class Aula extends Model
         'titulo',
         'descricao',
         'url_id',
-        'img_capa',
+        'img_reference',
         'ordem',
         'submodulo_id',
     ];

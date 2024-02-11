@@ -23,7 +23,8 @@ class UpdateAulaRequest extends FormRequest
     {
         return [
             'titulo' => 'required|string',
-            'descricao' => 'required|string',
+            'descricao' => 'string',
+            'img_reference' => 'string',
             'ordem' => 'required|integer',
             'url_id' => 'required|string',
         ];

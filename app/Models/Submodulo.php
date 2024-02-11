@@ -15,7 +15,7 @@ class Submodulo extends Model
         'descricao',
         'ordem',
         'modulo_id',
-        'img_capa'
+        'img_reference'
     ];
 
     public function modulo()

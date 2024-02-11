@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('titulo');
-            $table->text('descricao');
-            $table->string('url_id');
-            $table->string('img_capa');
+            $table->text('descricao')->nullable(true);
+            $table->string('url_id')->nullable(true);
+            $table->string('img_reference')->nullable(true);
             $table->integer('ordem');
             $table->foreignId('submodulo_id')->constrained('submodulos');
         });

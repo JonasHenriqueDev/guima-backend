@@ -18,6 +18,7 @@ class ModuloResource extends JsonResource
             'id' => $this->id,
             'titulo' => $this->titulo,
             'descricao' => $this->descricao,
+            'img_reference' => $this->img_reference,
             'ordem' => $this->ordem,
             'submodulos' => SubmoduloResource::collection($this->whenLoaded('submodulos')),
         ];

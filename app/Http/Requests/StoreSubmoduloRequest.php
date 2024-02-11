@@ -26,7 +26,7 @@ class StoreSubmoduloRequest extends FormRequest
             'descricao' => 'string',
             'ordem' => 'required|integer',
             'modulo_id' => 'required|integer',
-            'img_capa' => 'string',
+            'img_reference' => 'string',
         ];
     }
 }

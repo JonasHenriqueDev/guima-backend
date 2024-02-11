@@ -24,6 +24,7 @@ class UpdateModuloRequest extends FormRequest
         return [
             'titulo' => 'required|string',
             'descricao' => 'required|string',
+            'img_reference' => 'string',
             'ordem' => 'required|integer',
         ];
     }

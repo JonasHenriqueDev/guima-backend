@@ -22,7 +22,11 @@ class UpdateSubmoduloRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'titulo' => 'required|string',
+            'descricao' => 'string',
+            'ordem' => 'required|integer',
+            'modulo_id' => 'required|integer',
+            'img_reference' => 'string',
         ];
     }
 }

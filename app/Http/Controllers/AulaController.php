@@ -28,11 +28,18 @@ class AulaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAulaRequest $request, string $modulo_id)
+    public function store(StoreAulaRequest $request, string $modulo_id, string $submodulo_id)
     {
         $data = $request->validated();
 
         $data['modulo_id'] = $modulo_id;
+        $data['submodulo_id'] = $submodulo_id;
+
+        $img = $request->file('img_reference');
+
+        $path = $img->store('images/aulas', 'public');
+
+        $data['img_reference'] = $path;
 
         $aula = Aula::create($data);
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\SubmoduloController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AulaController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +57,7 @@ Route::middleware(['auth:sanctum', 'ability:professor'])->group(function () {
 // Rotas acessíveis por qualquer usuario logado
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [MeController::class, 'me']);
+    Route::get('/image', [ImageController::class, 'show']);
 
     // Rotas relacionadas a módulos, submodulos e aulas
     Route::prefix('modulos')->group(function () {
