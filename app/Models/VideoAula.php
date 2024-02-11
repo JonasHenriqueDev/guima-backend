@@ -14,6 +14,7 @@ class VideoAula extends Model
         'titulo',
         'descricao',
         'url_id',
+        'img_capa',
         'ordem',
         'submodulo_id',
     ];
