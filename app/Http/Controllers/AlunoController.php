@@ -8,7 +8,14 @@ use App\Http\Resources\AlunoResource;
 use App\Models\Aluno;
 use App\Models\User;
 use Illuminate\Http\Response;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Info(
+ *   version="1.0.0",
+ *   title="GuimaAPI"
+ * )
+ */
 class AlunoController extends Controller
 {
     public function __construct(
@@ -18,7 +25,10 @@ class AlunoController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/v1/alunos",
+     *     @OA\Response(response="200", description="Listar todos os alunos")
+     * )
      */
     public function index()
     {

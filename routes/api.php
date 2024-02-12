@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\ModuloController;
@@ -27,53 +28,61 @@ Route::get('/', function () {
     ]);
 });
 
-// Rotas para autenticação
-Route::prefix('auth')->group(function () {
-    Route::post('login', [LoginController::class, 'login']);
-    Route::post('register', [UserController::class, 'store']);
+Route::prefix('api/v1')->middleware('json.response')->group(function () {
 
+    // Rotas para autenticação
+    Route::prefix('auth')->group(function () {
+        Route::post('login', [LoginController::class, 'login']);
+        Route::post('register', [UserController::class, 'store']);
+
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::post('reset_password', [LoginController::class, 'resetPassword']);
+            Route::post('logout', [LoginController::class, 'logout']);
+        });
+    });
+
+    // Rotas acessíveis apenas por professores
+    Route::middleware(['auth:sanctum', 'ability:professor'])->group(function () {
+        Route::apiResource('professores', ProfessorController::class);
+        Route::apiResource('users', UserController::class);
+        Route::apiResource('alunos', AlunoController::class);
+        Route::apiResource('modulos', ModuloController::class);
+        Route::apiResource('submodulos', SubmoduloController::class);
+        Route::apiResource('aulas', AulaController::class);
+
+
+        // Rotas para Módulos, Submódulos e aulas
+        Route::prefix('modulos')->group(function () {
+            Route::post('/', [ModuloController::class, 'store']);
+            Route::put('{id}', [ModuloController::class, 'update']);
+            Route::patch('{id}', [ModuloController::class, 'update']);
+            Route::delete('{id}', [ModuloController::class, 'destroy']);
+
+
+            Route::apiResource('{moduloId}/submodulos', SubmoduloController::class)->except(['show']);
+            Route::get('{moduloId}/submodulos/{submoduloId}', [SubmoduloController::class, 'show']);
+            Route::apiResource('{moduloId}/submodulos/{submoduloId}/aulas', AulaController::class);
+        });
+    });
+
+
+    // Rotas acessíveis por qualquer usuario logado
     Route::middleware('auth:sanctum')->group(function () {
-        Route::post('reset_password', [LoginController::class, 'resetPassword']);
-        Route::post('logout', [LoginController::class, 'logout']);
-    });
-});
+        Route::get('/me', [MeController::class, 'me']);
+        Route::get('/image', [ImageController::class, 'show']);
 
-// Rotas acessíveis apenas por professores
-Route::middleware(['auth:sanctum', 'ability:professor'])->group(function () {
-    Route::apiResource('professores', ProfessorController::class);
-    Route::apiResource('users', UserController::class);
+        // Rotas relacionadas a módulos, submodulos e aulas
+        Route::prefix('modulos')->group(function () {
+            Route::get('/', [ModuloController::class, 'index']);
+            Route::get('/{id}', [ModuloController::class, 'show']);
 
-    // Rotas para Módulos, Submódulos e aulas
-    Route::prefix('modulos')->group(function () {
-        Route::post('/', [ModuloController::class, 'store']);
-        Route::put('{id}', [ModuloController::class, 'update']);
-        Route::patch('{id}', [ModuloController::class, 'update']);
-        Route::delete('{id}', [ModuloController::class, 'destroy']);
+            Route::get('{moduloId}/submodulos', [SubmoduloController::class, 'index']);
+            Route::get('{moduloId}/submodulos/{submoduloId}', [SubmoduloController::class, 'show']);
 
-
-        Route::apiResource('{moduloId}/submodulos', SubmoduloController::class)->except(['show']);
-        Route::get('{moduloId}/submodulos/{submoduloId}', [SubmoduloController::class, 'show']);
-        Route::apiResource('{moduloId}/submodulos/{submoduloId}/aulas', AulaController::class);
-    });
-});
-
-
-// Rotas acessíveis por qualquer usuario logado
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/me', [MeController::class, 'me']);
-    Route::get('/image', [ImageController::class, 'show']);
-
-    // Rotas relacionadas a módulos, submodulos e aulas
-    Route::prefix('modulos')->group(function () {
-        Route::get('/', [ModuloController::class, 'index']);
-        Route::get('/{id}', [ModuloController::class, 'show']);
-
-        Route::get('{moduloId}/submodulos', [SubmoduloController::class, 'index']);
-        Route::get('{moduloId}/submodulos/{submoduloId}', [SubmoduloController::class, 'show']);
-
-        Route::prefix('{moduloId}/submodulos/{submoduloId}/aulas')->group(function () {
-            Route::get('/', [AulaController::class, 'index']);
-            Route::get('/{id}', [AulaController::class, 'show']);
+            Route::prefix('{moduloId}/submodulos/{submoduloId}/aulas')->group(function () {
+                Route::get('/', [AulaController::class, 'index']);
+                Route::get('/{id}', [AulaController::class, 'show']);
+            });
         });
     });
 });
