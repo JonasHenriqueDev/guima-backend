@@ -24,7 +24,8 @@ class User extends Authenticatable
         'birth_date',
         'cpf',
         'address',
-        'profile_type',
+        'photo',
+        'profile_type'
     ];
 
     /**

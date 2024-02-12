@@ -14,7 +14,10 @@ class AlunoSeeder extends Seeder
     public function run(): void
     {
         Aluno::create([
-            'id' => 1
+            'id' => 1,
+            'plano' => 'mensal',
+            'vencimento' => '2024-01-29',
+            'status' => true,
         ]);
     }
 }

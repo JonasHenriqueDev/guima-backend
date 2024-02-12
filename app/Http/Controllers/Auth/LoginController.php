@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Aluno;
 use App\Models\User;
+use App\Services\AlunoService;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -27,8 +29,18 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials) && $profile_type === 'App\Models\Aluno') {
 
+            $user = $request->user();
+
+            $user->tokens()->delete();
+
+            $status = AlunoService::verifyStatus($user->profile_id);
+
+            if (!$status) {
+                return $this->response('Usuário bloqueado', Response::HTTP_UNAUTHORIZED);
+            }
+
             $response = $this->response('Authorized', Response::HTTP_OK, [
-                'token' => $request->user()->createToken('aluno_token', ["aluno"])->plainTextToken
+                'token' => $user->createToken('aluno_token', ["aluno"])->plainTextToken
             ]);
 
             return $response;
@@ -36,8 +48,12 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials) && $profile_type === 'App\Models\Professor') {
 
+            $user = $request->user();
+
+            $user->tokens()->delete();
+
             $response = $this->response('Authorized', Response::HTTP_OK, [
-                'token' => $request->user()->createToken('professor_token')->plainTextToken
+                'token' => $user->createToken('professor_token')->plainTextToken
             ]);
 
             return $response;
@@ -62,13 +78,11 @@ class LoginController extends Controller
 
         $auth = Auth::user();
 
-        if (!Hash::check($request->get('current_password'), $auth->password)) 
-        {
+        if (!Hash::check($request->get('current_password'), $auth->password)) {
             return $this->response('A senha não corresponde a senha atual', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        
-        if (strcmp($request->current_password, $request->new_password) == 0) 
-        {
+
+        if (strcmp($request->current_password, $request->new_password) == 0) {
             return $this->response("A nova senha não pode ser igual a senha atual. Por favor, escolha uma senha diferente.", Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 

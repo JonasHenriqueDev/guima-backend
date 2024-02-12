@@ -9,6 +9,12 @@ class Aluno extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'plano',
+        'vencimento',
+        'status',
+    ];
+
     public function user()
     {
         return $this->morphOne(User::class, 'profile');
