@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('descricao')->nullable(true);
             $table->string('url_id')->nullable(true);
             $table->string('img_reference')->nullable(true);
-            $table->integer('ordem');
+            $table->integer('ordem')->unique();
             $table->foreignId('submodulo_id')->constrained('submodulos');
         });
     }
