@@ -1,0 +1,19 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "GuimaAPI",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/alunos": {
+            "get": {
+                "operationId": "9bf7261a9f1659e8fcc37d819026ea4d",
+                "responses": {
+                    "200": {
+                        "description": "Listar todos os alunos"
+                    }
+                }
+            }
+        }
+    }
+}
