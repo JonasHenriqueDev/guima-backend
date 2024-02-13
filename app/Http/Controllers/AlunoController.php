@@ -87,7 +87,6 @@ class AlunoController extends Controller
      *              @OA\Property(property="address", type="string", example="Rua das Flores, 123"),
      *              @OA\Property(property="email", type="string", example="joao@email.com"),
      *              @OA\Property(property="password", type="string", example="12345678"),
-     *              @OA\Property(property="profile_type", type="enum", example="aluno"),
      *              @OA\Property(property="plano", type="enum", example="mensal"),
      *              @OA\Property(property="vencimento", type="date", example="2024-12-31"),
      *              @OA\Property(property="status", type="boolean", example="true"),
@@ -98,9 +97,7 @@ class AlunoController extends Controller
     public function update(UpdateAlunoRequest $request, string $id)
     {
         $aluno = $this->repository->findOrFail($id);
-        dd($request->validated());
-        $user = User::findOrFail($aluno->user_id);
-
+        $user = User::where('profile_type', 'App\Models\Aluno')->where('profile_id', $aluno->id)->first();
         $data = $request->validated();
         $aluno->update($data);
         $user->update($data);
