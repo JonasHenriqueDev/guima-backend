@@ -8,6 +8,7 @@ use App\Http\Requests\UserStoreUpdateFormRequest;
 use App\Models\Aluno;
 use App\Models\Professor;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -30,7 +31,6 @@ class UserController extends Controller
     {
         $data = $request->validated();
         //$data['password'] = bcrypt($data['password']);
-
         $profileType = $data['profile_type'];
 
         $allowedProfileTypes = ['professor', 'aluno'];
@@ -39,7 +39,6 @@ class UserController extends Controller
             return $this->error('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        // $profileType = 'aluno'; // OBS: The store user for this system is always a student
         $cpf = $data['cpf'];
 
         switch ($profileType) {
@@ -48,7 +47,8 @@ class UserController extends Controller
                 $user = $professor->user()->create($data + ['password' => Hash::make($cpf)]);
                 break;
             case 'aluno':
-                $aluno = Aluno::create();
+                $alunoData = Arr::only($data, ['plano', 'vencimento', 'status']);
+                $aluno = Aluno::create($alunoData);
                 $user = $aluno->user()->create($data + ['password' => Hash::make($cpf)]);
                 break;
             default:

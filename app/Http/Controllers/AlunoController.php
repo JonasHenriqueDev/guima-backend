@@ -10,12 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Response;
 use OpenApi\Annotations as OA;
 
-/**
- * @OA\Info(
- *   version="1.0.0",
- *   title="GuimaAPI"
- * )
- */
+
 class AlunoController extends Controller
 {
     public function __construct(
@@ -27,30 +22,37 @@ class AlunoController extends Controller
     /**
      * @OA\Get(
      *     path="/api/v1/alunos",
-     *     @OA\Response(response="200", description="Listar todos os alunos")
+     *     summary="Listar todos os alunos",
+     *     tags={"Alunos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna a lista de alunos"),
+     *     security={{ "apiAuth": {} }}
      * )
      */
     public function index()
     {
-        $alunos = User::where('profile_type', 'aluno')->paginate();
+        $alunos = $this->repository->paginate();
 
         return AlunoResource::collection($alunos);
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreAlunoRequest $request)
-    {
-        $data = $request->validated();
-        $aluno = $this->repository->create();
-        $aluno->user()->create($data);
-
-        return new AlunoResource($aluno);
-    }
-
-    /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/v1/alunos/{id}",
+     *     summary="Mostrar um aluno específico por id",
+     *     tags={"Alunos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o aluno específico por id"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="Buscar por id",
+     *          required=true,
+     *         ) 
+     * )
      */
     public function show(string $id)
     {
@@ -60,19 +62,64 @@ class AlunoController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Patch(
+     *     path="/api/v1/alunos/{id}",
+     *     summary="Atualizar um aluno específico por id",
+     *     tags={"Alunos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o aluno atualizado por id"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="Atualizar por id",
+     *          required=true,
+     *      ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="name", type="string", example="João da Silva"),
+     *              @OA\Property(property="birth_date", type="date", example="1990-12-31"),
+     *              @OA\Property(property="cpf", type="string", example="123.456.789-00"),
+     *              @OA\Property(property="address", type="string", example="Rua das Flores, 123"),
+     *              @OA\Property(property="email", type="string", example="joao@email.com"),
+     *              @OA\Property(property="password", type="string", example="12345678"),
+     *              @OA\Property(property="profile_type", type="enum", example="aluno"),
+     *              @OA\Property(property="plano", type="enum", example="mensal"),
+     *              @OA\Property(property="vencimento", type="date", example="2024-12-31"),
+     *              @OA\Property(property="status", type="boolean", example="true"),
+     *          )
+     *      ),
+     * )
      */
     public function update(UpdateAlunoRequest $request, string $id)
     {
         $aluno = $this->repository->findOrFail($id);
+        dd($request->validated());
+        $user = User::findOrFail($aluno->user_id);
+
         $data = $request->validated();
         $aluno->update($data);
+        $user->update($data);
 
         return new AlunoResource($aluno);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/v1/alunos/{id}",
+     *     summary="Deletar um aluno específico por id",
+     *     description="Deletar um aluno específico por id",
+     *     tags={"Alunos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="204", description="Aluno deletado com sucesso"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     }
+     * )
      */
     public function destroy(string $id)
     {

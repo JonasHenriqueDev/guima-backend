@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'GuimaAPI',
+                'title' => 'GuimaAPI Docs',
             ],
 
             'routes' => [

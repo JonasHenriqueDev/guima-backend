@@ -7,6 +7,21 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
+/**
+ * @OA\Info(
+ *   version="1.0.0",
+ *   title="GuimaAPI",
+ *   description="API para gerenciamento de alunos, treino, dieta, aulas e avaliações físicas.",
+ * )
+ *
+ * @OA\SecurityScheme(
+ *     type="http",
+ *     in="header",
+ *     scheme="bearer",
+ *     bearerFormat="JWT",
+ *     securityScheme="apiAuth",
+ * )
+ */
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests, HttpResponses;

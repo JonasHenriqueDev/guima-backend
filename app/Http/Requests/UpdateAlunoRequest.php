@@ -21,9 +21,18 @@ class UpdateAlunoRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules['password'] = ['nullable', 'string', 'min:8', 'confirmed'];
-        $rules['email'] = ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $this->id];
-
+        $rules = [
+            // 'name' => ['required', 'string', 'max:255'],
+            // 'birth_date' => ['required', 'date'],
+            // 'cpf' => ['required', 'string', 'max:14'],
+            // 'address' => ['required', 'string', 'max:255'],
+            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email' . $this->id],
+            // // 'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // 'profile_type' => ['required', 'string', 'in:professor,aluno'],
+            'plano' => 'string',
+            'vencimento' => 'date',
+            'status' => 'boolean',
+        ];
         return $rules;
     }
 }
