@@ -26,7 +26,9 @@ class AlunoController extends Controller
      *     tags={"Alunos"},
      *     security={{"bearerAuth": {}}},
      *     @OA\Response(response="200", description="Retorna a lista de alunos"),
-     *     security={{ "apiAuth": {} }}
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
      * )
      */
     public function index()
@@ -115,7 +117,13 @@ class AlunoController extends Controller
      *     @OA\Response(response="204", description="Aluno deletado com sucesso"),
      *     security={
      *          { "apiAuth": {} }
-     *     }
+     *     },
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="Id do aluno",
+     *          required=true,
+     *         ) 
      * )
      */
     public function destroy(string $id)

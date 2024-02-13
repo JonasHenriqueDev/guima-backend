@@ -12,7 +12,22 @@ use Illuminate\Http\Response;
 class SubmoduloController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/v1/modulos/{modulo_id}/submodulos",
+     *     summary="Listar todos os submodulos de um modulo específico",
+     *     tags={"Submodulos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna a lista de submodulos"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *     @OA\Parameter(
+     *          name="modulo_id",
+     *          in="path",
+     *          description="Id do modulo",
+     *          required=true,
+     *         )
+     * )
      */
     public function index(string $modulo_id)
     {
@@ -24,7 +39,33 @@ class SubmoduloController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/v1/modulos/{modulo_id}/submodulos",
+     *     summary="Criar um novo submodulo",
+     *     tags={"Submodulos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o submodulo criado"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\Parameter(
+     *          name="modulo_id",
+     *          in="path",
+     *          description="Id do modulo",
+     *          required=true,
+     *         ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="titulo", type="string", example="Treinamento"),
+     *              @OA\Property(property="descricao", type="string", example="Modulo de treinamento"),
+     *              @OA\Property(property="ordem", type="integer", example="3"),
+     *              @OA\Property(property="img_reference", type="string", example="null"),
+     *              @OA\Property(property="modulo_id", type="integer", example="1"),
+     *          )
+     *      ),
+     * )
      */
     public function store(StoreSubmoduloRequest $request)
     {
@@ -44,7 +85,28 @@ class SubmoduloController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/v1/modulos/{modulo_id}/submodulos/{submodulo_id}",
+     *     summary="Mostrar um submodulo específico por id",
+     *     tags={"Submodulos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o submodulo específico por id"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\Parameter(
+     *          name="modulo_id",
+     *          in="path",
+     *          description="Id do modulo",
+     *          required=true,
+     *         ),
+     *      @OA\Parameter(
+     *          name="submodulo_id",
+     *          in="path",
+     *          description="Id do submodulo",
+     *          required=true,
+     *         )
+     * )
      */
     public function show(string $moduloId, string $submoduloId)
     {
@@ -57,12 +119,44 @@ class SubmoduloController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Patch(
+     *     path="/api/v1/modulos/{modulo_id}/submodulos/{submodulo_id}",
+     *     summary="Criar um novo submodulo",
+     *     tags={"Submodulos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o submodulo criado"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\Parameter(
+     *          name="modulo_id",
+     *          in="path",
+     *          description="Id do modulo",
+     *          required=true,
+     *         ),
+     *      @OA\Parameter(
+     *          name="submodulo_id",
+     *          in="path",
+     *          description="Id do submodulo",
+     *          required=true,
+     *         ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="titulo", type="string", example="Treinamento"),
+     *              @OA\Property(property="descricao", type="string", example="Modulo de treinamento"),
+     *              @OA\Property(property="ordem", type="integer", example="3"),
+     *              @OA\Property(property="img_reference", type="string", example="null"),
+     *              @OA\Property(property="modulo_id", type="integer", example="1"),
+     *          )
+     *      ),
+     * )
      */
     public function update(UpdateSubmoduloRequest $request, string $id)
     {
         $submodulo = SubModulo::findOrFail($id);
-        
+
         $request = $request->validated();
 
         if (isset($request['img_reference'])) {
@@ -79,7 +173,28 @@ class SubmoduloController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/v1/modulos/{modulo_id}/submodulos/{submodulo_id}",
+     *     summary="Deletar um submodulo específico por id",
+     *     tags={"Submodulos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o submodulo deletado"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\Parameter(
+     *          name="modulo_id",
+     *          in="path",
+     *          description="Id do modulo",
+     *          required=true,
+     *         ),
+     *      @OA\Parameter(
+     *          name="sybmodulo_id",
+     *          in="path",
+     *          description="Id do submodulo",
+     *          required=true,
+     *         )
+     * )
      */
     public function destroy(string $id)
     {

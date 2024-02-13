@@ -58,6 +58,14 @@
                 "summary": "Deletar um aluno específico por id",
                 "description": "Deletar um aluno específico por id",
                 "operationId": "8e96d86e16ac967d998a8b307ad3e457",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id do aluno",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "204": {
                         "description": "Aluno deletado com sucesso"
@@ -114,10 +122,6 @@
                                         "type": "string",
                                         "example": "12345678"
                                     },
-                                    "profile_type": {
-                                        "type": "enum",
-                                        "example": "aluno"
-                                    },
                                     "plano": {
                                         "type": "enum",
                                         "example": "mensal"
@@ -140,6 +144,883 @@
                 "responses": {
                     "200": {
                         "description": "Retorna o aluno atualizado por id"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/modulos/{modulo_id}/submodulos/{submodulo_id}/aulas": {
+            "get": {
+                "tags": [
+                    "Aulas"
+                ],
+                "summary": "Listar todos as aulas do submodulo",
+                "operationId": "95eb7cada7152fa3e7005f11ce9b4095",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "path",
+                        "description": "Id do modulo",
+                        "required": true
+                    },
+                    {
+                        "name": "submodulo_id",
+                        "in": "path",
+                        "description": "Id do submodulo",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de alunos"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Aulas"
+                ],
+                "summary": "Criar uma nova aula",
+                "operationId": "49bd4f11e6ea3e4dc55bd220f6e69761",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titulo": {
+                                        "type": "string",
+                                        "example": "Supino Reto"
+                                    },
+                                    "descricao": {
+                                        "type": "string",
+                                        "example": "Supino Reto"
+                                    },
+                                    "img_reference": {
+                                        "type": "string",
+                                        "example": "null"
+                                    },
+                                    "url_id": {
+                                        "type": "string",
+                                        "example": "dQw4w9WgXcQ"
+                                    },
+                                    "ordem": {
+                                        "type": "integer",
+                                        "example": "6"
+                                    },
+                                    "submodulo_id": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "modulo_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna a aula criada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/modulos/{modulo_id}/submodulos/{submodulo_id}/aulas/{id}": {
+            "get": {
+                "tags": [
+                    "Aulas"
+                ],
+                "summary": "Mostrar uma aula específica por id",
+                "operationId": "e7dd19cd615eee70596c32226baadfcd",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "path",
+                        "description": "Id do modulo",
+                        "required": true
+                    },
+                    {
+                        "name": "submodulo_id",
+                        "in": "path",
+                        "description": "Id do submodulo",
+                        "required": true
+                    },
+                    {
+                        "name": "aula_id",
+                        "in": "path",
+                        "description": "Id da aula",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna a aula específica por id"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/modulos/{modulo_id}/submodulos/{submodulo_id}/aulas/{aula_id}": {
+            "delete": {
+                "tags": [
+                    "Aulas"
+                ],
+                "summary": "Deletar uma aula específica por id",
+                "description": "Deletar uma aula específica por id",
+                "operationId": "4977b28c863f6ef288a728fac0c6a6ae",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "path",
+                        "description": "Id do modulo",
+                        "required": true
+                    },
+                    {
+                        "name": "submodulo_id",
+                        "in": "path",
+                        "description": "Id do submodulo",
+                        "required": true
+                    },
+                    {
+                        "name": "aula_id",
+                        "in": "path",
+                        "description": "Id da aula",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Aula deletado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Aulas"
+                ],
+                "summary": "Atualizar uma aula específica por id",
+                "operationId": "c05570e6b6512ba94717483948bcd797",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "path",
+                        "description": "Id do modulo",
+                        "required": true
+                    },
+                    {
+                        "name": "submodulo_id",
+                        "in": "path",
+                        "description": "Id do submodulo",
+                        "required": true
+                    },
+                    {
+                        "name": "aula_id",
+                        "in": "path",
+                        "description": "Id da aula",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titulo": {
+                                        "type": "string",
+                                        "example": "Supino Reto"
+                                    },
+                                    "descricao": {
+                                        "type": "string",
+                                        "example": "Supino Reto"
+                                    },
+                                    "img_reference": {
+                                        "type": "string",
+                                        "example": "null"
+                                    },
+                                    "url_id": {
+                                        "type": "string",
+                                        "example": "dQw4w9WgXcQ"
+                                    },
+                                    "ordem": {
+                                        "type": "integer",
+                                        "example": "6"
+                                    },
+                                    "submodulo_id": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "modulo_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna a aula atualizada por id"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/image": {
+            "get": {
+                "tags": [
+                    "Imagens"
+                ],
+                "summary": "Mostrar uma imagem específica pela sua referência",
+                "operationId": "c0aef05db44c363e39bacc4f6db65e12",
+                "parameters": [
+                    {
+                        "name": "reference",
+                        "in": "query",
+                        "description": "Buscar por referência da imagem    ",
+                        "required": true,
+                        "example": "images/xTTltUkTRHNWHxs4jnWxAR1YpN56ujWf9fFpl4VP.jpg"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna a imagem específica pela sua referência"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/me": {
+            "get": {
+                "tags": [
+                    "Me"
+                ],
+                "summary": "Mostrar o usuário autenticado",
+                "operationId": "d60e955664a2606dfc8d5928da8dfcd1",
+                "responses": {
+                    "200": {
+                        "description": "Retorna o usuário autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/modulos": {
+            "get": {
+                "tags": [
+                    "Modulos"
+                ],
+                "summary": "Listar todos os modulos",
+                "operationId": "db59cbb33e25a3bd02924aeb82476456",
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de modulos"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Modulos"
+                ],
+                "summary": "Criar um novo modulo",
+                "operationId": "e7866d9463e35c03ff375124542e73fa",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titulo": {
+                                        "type": "string",
+                                        "example": "Treinamento"
+                                    },
+                                    "descricao": {
+                                        "type": "string",
+                                        "example": "Modulo de treinamento"
+                                    },
+                                    "ordem": {
+                                        "type": "integer",
+                                        "example": "3"
+                                    },
+                                    "img_reference": {
+                                        "type": "string",
+                                        "example": "null"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o modulo criado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/modulos/{modulo_id}": {
+            "get": {
+                "tags": [
+                    "Modulos"
+                ],
+                "summary": "Mostrar um modulo específico por id",
+                "operationId": "72a0c0435ced86bff2d94edf8bd1a923",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "path",
+                        "description": "Id do modulo",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o modulo específico por id"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Modulos"
+                ],
+                "summary": "Deletar um modulo específico por id",
+                "operationId": "4cdb8fd5b0c0b50784e26f2160a177cb",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "path",
+                        "description": "Id do modulo",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o modulo deletado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Modulos"
+                ],
+                "summary": "Atualizar um modulo específico por id",
+                "operationId": "6cceaaef24235c451f7c3e05dd26249c",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "path",
+                        "description": "Id do modulo",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titulo": {
+                                        "type": "string",
+                                        "example": "Treinamento"
+                                    },
+                                    "descricao": {
+                                        "type": "string",
+                                        "example": "Modulo de treinamento"
+                                    },
+                                    "ordem": {
+                                        "type": "integer",
+                                        "example": "3"
+                                    },
+                                    "img_reference": {
+                                        "type": "string",
+                                        "example": "null"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o modulo atualizado por id"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/modulos/{modulo_id}/submodulos": {
+            "get": {
+                "tags": [
+                    "Submodulos"
+                ],
+                "summary": "Listar todos os submodulos de um modulo específico",
+                "operationId": "b54a3167efa7fca7f5b721f2b344f1fd",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "path",
+                        "description": "Id do modulo",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de submodulos"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Submodulos"
+                ],
+                "summary": "Criar um novo submodulo",
+                "operationId": "dadca4cdddae9dab3a3430f12ecb1647",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "path",
+                        "description": "Id do modulo",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titulo": {
+                                        "type": "string",
+                                        "example": "Treinamento"
+                                    },
+                                    "descricao": {
+                                        "type": "string",
+                                        "example": "Modulo de treinamento"
+                                    },
+                                    "ordem": {
+                                        "type": "integer",
+                                        "example": "3"
+                                    },
+                                    "img_reference": {
+                                        "type": "string",
+                                        "example": "null"
+                                    },
+                                    "modulo_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o submodulo criado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/modulos/{modulo_id}/submodulos/{submodulo_id}": {
+            "get": {
+                "tags": [
+                    "Submodulos"
+                ],
+                "summary": "Mostrar um submodulo específico por id",
+                "operationId": "bfb7f9b831849947c8bb33892110793d",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "path",
+                        "description": "Id do modulo",
+                        "required": true
+                    },
+                    {
+                        "name": "submodulo_id",
+                        "in": "path",
+                        "description": "Id do submodulo",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o submodulo específico por id"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Submodulos"
+                ],
+                "summary": "Deletar um submodulo específico por id",
+                "operationId": "ad06f2e968878f2f99806a5e584fde82",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "path",
+                        "description": "Id do modulo",
+                        "required": true
+                    },
+                    {
+                        "name": "sybmodulo_id",
+                        "in": "path",
+                        "description": "Id do submodulo",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o submodulo deletado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Submodulos"
+                ],
+                "summary": "Criar um novo submodulo",
+                "operationId": "6b0c0185917141fca715e8a9a0cce613",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "path",
+                        "description": "Id do modulo",
+                        "required": true
+                    },
+                    {
+                        "name": "submodulo_id",
+                        "in": "path",
+                        "description": "Id do submodulo",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titulo": {
+                                        "type": "string",
+                                        "example": "Treinamento"
+                                    },
+                                    "descricao": {
+                                        "type": "string",
+                                        "example": "Modulo de treinamento"
+                                    },
+                                    "ordem": {
+                                        "type": "integer",
+                                        "example": "3"
+                                    },
+                                    "img_reference": {
+                                        "type": "string",
+                                        "example": "null"
+                                    },
+                                    "modulo_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o submodulo criado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/users": {
+            "get": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Listar todos os usuários",
+                "operationId": "3ab81e3f9b24b4f36ab08d72349ac632",
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de usuários"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Registrar um novo usuário",
+                "description": "A senha padrão é o cpf do usuário.",
+                "operationId": "ba548b97148bb5c0d8cab3bc3f128bfd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Joao"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "joao@email.com"
+                                    },
+                                    "birth_date": {
+                                        "type": "string",
+                                        "example": "01-01-2003"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "example": "111.111.111-13"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Rua teste"
+                                    },
+                                    "profile_type": {
+                                        "type": "string",
+                                        "example": "aluno"
+                                    },
+                                    "plano": {
+                                        "type": "string",
+                                        "example": "anual"
+                                    },
+                                    "vencimento": {
+                                        "type": "string",
+                                        "example": "2025-12-12"
+                                    },
+                                    "status": {
+                                        "type": "boolean",
+                                        "example": "true"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o usuário registrado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/users/{id}": {
+            "get": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Mostrar um usuário específico por id",
+                "operationId": "daaf7a6169ee9348c3fddb07778598ff",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Buscar por id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o usuário específico por id"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Deletar um usuário específico por id",
+                "description": "Deletar um usuário específico por id",
+                "operationId": "c30c64b8b7730b65c7714c9af4a6f5fa",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id do usuário",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Usuário deletado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Atualizar um usuário",
+                "description": "Para atualizar a senha, utilize o endpoint POST /api/v1/auth/reset-password.",
+                "operationId": "12801392b8a73f66c3932bc46754d201",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Joao"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "joao@email.com"
+                                    },
+                                    "birth_date": {
+                                        "type": "string",
+                                        "example": "01-01-2003"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "example": "111.111.111-13"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Rua teste"
+                                    },
+                                    "profile_type": {
+                                        "type": "string",
+                                        "example": "aluno"
+                                    },
+                                    "plano": {
+                                        "type": "string",
+                                        "example": "anual"
+                                    },
+                                    "vencimento": {
+                                        "type": "string",
+                                        "example": "2025-12-12"
+                                    },
+                                    "status": {
+                                        "type": "boolean",
+                                        "example": "true"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o usuário atualizado"
                     }
                 },
                 "security": [

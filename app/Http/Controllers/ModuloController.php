@@ -16,7 +16,16 @@ class ModuloController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/v1/modulos",
+     *     summary="Listar todos os modulos",
+     *     tags={"Modulos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna a lista de modulos"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     * )
      */
     public function index()
     {
@@ -25,7 +34,26 @@ class ModuloController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/v1/modulos",
+     *     summary="Criar um novo modulo",
+     *     tags={"Modulos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o modulo criado"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="titulo", type="string", example="Treinamento"),
+     *              @OA\Property(property="descricao", type="string", example="Modulo de treinamento"),
+     *              @OA\Property(property="ordem", type="integer", example="3"),
+     *              @OA\Property(property="img_reference", type="string", example="null"),
+     *          )
+     *      ),
+     * )
      */
     public function store(StoreModuloRequest $request)
     {
@@ -45,7 +73,22 @@ class ModuloController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/v1/modulos/{modulo_id}",
+     *     summary="Mostrar um modulo específico por id",
+     *     tags={"Modulos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o modulo específico por id"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\Parameter(
+     *          name="modulo_id",
+     *          in="path",
+     *          description="Id do modulo",
+     *          required=true,
+     *         )
+     * )
      */
     public function show(string $id)
     {
@@ -55,7 +98,32 @@ class ModuloController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Patch(
+     *     path="/api/v1/modulos/{modulo_id}",
+     *     summary="Atualizar um modulo específico por id",
+     *     tags={"Modulos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o modulo atualizado por id"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\Parameter(
+     *          name="modulo_id",
+     *          in="path",
+     *          description="Id do modulo",
+     *          required=true,
+     *         ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="titulo", type="string", example="Treinamento"),
+     *              @OA\Property(property="descricao", type="string", example="Modulo de treinamento"),
+     *              @OA\Property(property="ordem", type="integer", example="3"),
+     *              @OA\Property(property="img_reference", type="string", example="null"),
+     *          )
+     *      ),
+     * )
      */
     public function update(UpdateModuloRequest $request, string $id)
     {
@@ -77,7 +145,22 @@ class ModuloController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/v1/modulos/{modulo_id}",
+     *     summary="Deletar um modulo específico por id",
+     *     tags={"Modulos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o modulo deletado"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\Parameter(
+     *          name="modulo_id",
+     *          in="path",
+     *          description="Id do modulo",
+     *          required=true,
+     *         )
+     * )
      */
     public function destroy(string $id)
     {

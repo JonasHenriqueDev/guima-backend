@@ -36,7 +36,7 @@ Route::prefix('api/v1')->middleware('json.response')->group(function () {
         Route::post('register', [UserController::class, 'store']);
 
         Route::middleware('auth:sanctum')->group(function () {
-            Route::post('reset_password', [LoginController::class, 'resetPassword']);
+            Route::post('reset-password', [LoginController::class, 'resetPassword']);
             Route::post('logout', [LoginController::class, 'logout']);
         });
     });

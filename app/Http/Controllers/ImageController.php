@@ -21,11 +21,26 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/v1/image",
+     *     summary="Mostrar uma imagem específica pela sua referência",
+     *     tags={"Imagens"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna a imagem específica pela sua referência"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\Parameter(
+     *          name="reference",
+     *          in="query",
+     *          description="Buscar por referência da imagem    ",
+     *          required=true,
+     *          example="images/xTTltUkTRHNWHxs4jnWxAR1YpN56ujWf9fFpl4VP.jpg"
+     *         ) 
+     * )
      */
     public function show()
     {
