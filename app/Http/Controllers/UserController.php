@@ -53,10 +53,10 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/v1/users",
+     *     path="/api/v1/auth/register",
      *     summary="Registrar um novo usuário",
      *     description="A senha padrão é o cpf do usuário.",
-     *     tags={"Usuários"},
+     *     tags={"Autenticação"},
      *     security={{"bearerAuth": {}}},
      *     @OA\Response(response="200", description="Retorna o usuário registrado"),
      *     security={

@@ -399,6 +399,121 @@
                 ]
             }
         },
+        "/api/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Realizar login no sistema",
+                "operationId": "202eabfbaee70ce8a63f153b2b2c8824",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "admin@email.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o token de acesso"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/logout": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Realizar logout no sistema",
+                "operationId": "ee2caac749caf2a5b5eebeffbe9e4f0b",
+                "responses": {
+                    "200": {
+                        "description": "Retorna mensagem de token revogado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/reset-password": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Redefinir senha do usuário logado",
+                "operationId": "ceb16d2047d7f73c04e468f96982d4c9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "current_password",
+                                    "new_password",
+                                    "new_password_confirmation"
+                                ],
+                                "properties": {
+                                    "current_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password"
+                                    },
+                                    "new_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword"
+                                    },
+                                    "new_password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna mensagem de senha alterada com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/image": {
             "get": {
                 "tags": [
@@ -843,14 +958,16 @@
                         "apiAuth": []
                     }
                 ]
-            },
+            }
+        },
+        "/api/v1/auth/register": {
             "post": {
                 "tags": [
-                    "Usuários"
+                    "Autenticação"
                 ],
                 "summary": "Registrar um novo usuário",
                 "description": "A senha padrão é o cpf do usuário.",
-                "operationId": "ba548b97148bb5c0d8cab3bc3f128bfd",
+                "operationId": "dee6f679a91960170cd04c8dfdd9817b",
                 "requestBody": {
                     "required": true,
                     "content": {

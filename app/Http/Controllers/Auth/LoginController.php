@@ -15,7 +15,26 @@ use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     use HttpResponses;
-
+    /**
+     * @OA\Post(
+     *     path="/api/v1/auth/login",
+     *     summary="Realizar login no sistema",
+     *     tags={"Autenticação"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o token de acesso"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *    @OA\RequestBody(
+     *        required=true,
+     *       @OA\JsonContent(
+     *          required={"email", "password"},
+     *          @OA\Property(property="email", type="string", format="email", example="admin@email.com"),
+     *          @OA\Property(property="password", type="string", format="password", example="password"),
+     *          )
+     *      )
+     * )
+     */
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -62,6 +81,18 @@ class LoginController extends Controller
         return $this->error('Unauthorized', Response::HTTP_UNAUTHORIZED);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/v1/auth/logout",
+     *     summary="Realizar logout no sistema",
+     *     tags={"Autenticação"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna mensagem de token revogado"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     }
+     * )
+     */
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -69,6 +100,27 @@ class LoginController extends Controller
         return $this->response('Token Revoked', Response::HTTP_OK);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/v1/auth/reset-password",
+     *     summary="Redefinir senha do usuário logado",
+     *     tags={"Autenticação"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna mensagem de senha alterada com sucesso"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *    @OA\RequestBody(
+     *        required=true,
+     *       @OA\JsonContent(
+     *          required={"current_password", "new_password", "new_password_confirmation"},
+     *          @OA\Property(property="current_password", type="string", format="password", example="password"),
+     *          @OA\Property(property="new_password", type="string", format="password", example="newpassword"),
+     *          @OA\Property(property="new_password_confirmation", type="string", format="password", example="newpassword"),
+     *          )
+     *      )
+     * )
+     */
     public function resetPassword(Request $request)
     {
         $request->validate([
