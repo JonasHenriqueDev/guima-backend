@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAlunoRequest;
 use App\Http\Requests\UpdateAlunoRequest;
 use App\Http\Resources\AlunoResource;
+use App\Http\Resources\AlunosResource;
 use App\Models\Aluno;
 use App\Models\User;
 use Illuminate\Http\Response;
@@ -33,9 +34,12 @@ class AlunoController extends Controller
      */
     public function index()
     {
-        $alunos = $this->repository->paginate();
 
-        return AlunoResource::collection($alunos);
+
+        $users = User::where('profile_type', 'App\Models\Aluno')->paginate();
+
+
+        return AlunosResource::collection($users);
     }
 
     /**
