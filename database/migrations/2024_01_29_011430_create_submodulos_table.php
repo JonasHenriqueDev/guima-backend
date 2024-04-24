@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('titulo');
             $table->text('descricao')->nullable(true);
             $table->string('img_reference')->nullable(true);
-            $table->integer('ordem')->unique();
+            $table->integer('ordem')->nullable(true);
             $table->foreignId('modulo_id')->constrained('modulos');
         });
     }

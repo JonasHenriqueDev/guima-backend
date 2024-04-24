@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('alunos', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->enum('plano', ['mensal', 'trimestral', 'semestral', 'anual']);
+            $table->enum('plano', ['mensal', 'trimestral', 'semestral', 'anual'])->nullable(true);
             $table->date('vencimento');
             $table->boolean('status');
         });
