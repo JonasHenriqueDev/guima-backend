@@ -25,7 +25,7 @@ class StoreAulaRequest extends FormRequest
             'titulo' => 'required|string',
             'descricao' => 'string',
             'img_reference' => 'file|mimes:jpg,jpeg,png|max:2048',
-            'ordem' => 'required|integer',
+            'ordem' => 'integer',
             'url_id' => 'string',
         ];
     }

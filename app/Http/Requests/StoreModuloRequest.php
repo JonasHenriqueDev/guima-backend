@@ -24,7 +24,7 @@ class StoreModuloRequest extends FormRequest
         return [
             'titulo' => 'required|string',
             'descricao' => 'string',
-            'ordem' => 'required|integer',
+            'ordem' => 'integer',
             'img_reference' => 'file|mimes:jpg,jpeg,png|max:2048',
         ];
     }
