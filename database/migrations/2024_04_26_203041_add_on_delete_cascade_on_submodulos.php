@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('submodulos', function (Blueprint $table) {
+            $table->dropForeign(['modulo_id']);
             $table->foreign('modulo_id')
                 ->references('id')->on('modulos')
                 ->onDelete('cascade');
