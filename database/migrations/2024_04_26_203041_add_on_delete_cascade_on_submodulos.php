@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('submodulos', function (Blueprint $table) {
-            $table->dropForeign(['modulo_id']);
-            $table->foreignId('modulo_id')
-                ->constrained('modulos')
+            $table->foreign('modulo_id')
+                ->references('id')->on('modulos')
                 ->onDelete('cascade');
         });
     }
@@ -26,8 +25,6 @@ return new class extends Migration
     {
         Schema::table('submodulos', function (Blueprint $table) {
             $table->dropForeign(['modulo_id']);
-            $table->foreignId('modulo_id')
-                ->constrained('modulos');
         });
     }
 };
