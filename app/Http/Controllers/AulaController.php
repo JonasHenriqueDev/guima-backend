@@ -121,9 +121,9 @@ class AulaController extends Controller
      *        )
      * )
      */
-    public function show(string $id)
+    public function show(string $modulo_id, string $submodulo_id, string $aula_id)
     {
-        $aula = Aula::findOrFail($id);
+        $aula = Aula::findOrFail($aula_id);
 
         return AulaResource::make($aula);
     }
@@ -171,11 +171,11 @@ class AulaController extends Controller
      *      ),
      * )
      */
-    public function update(UpdateAulaRequest $request, string $id)
+    public function update(UpdateAulaRequest $request, string $modulo_id, string $submodulo_id, string $aula_id)
     {
         $request = $request->validated();
 
-        $aula = Aula::findOrFail($id);
+        $aula = Aula::findOrFail($aula_id);
 
         if (isset($request['img_reference'])) {
             $img = $request['img_reference'];
@@ -221,9 +221,9 @@ class AulaController extends Controller
      *        )
      * )
      */
-    public function destroy(string $id)
+    public function destroy(string $modulo_id, string $submodulo_id, string $aula_id)
     {
-        $aula = Aula::findOrFail($id);
+        $aula = Aula::findOrFail($aula_id);
 
         $aula->delete();
 

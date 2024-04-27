@@ -153,9 +153,9 @@ class SubmoduloController extends Controller
      *      ),
      * )
      */
-    public function update(UpdateSubmoduloRequest $request, string $id)
+    public function update(UpdateSubmoduloRequest $request, string $modulo_id, string $submodulo_id)
     {
-        $submodulo = SubModulo::findOrFail($id);
+        $submodulo = SubModulo::findOrFail($submodulo_id);
 
         $request = $request->validated();
 
@@ -196,9 +196,9 @@ class SubmoduloController extends Controller
      *         )
      * )
      */
-    public function destroy(string $id)
+    public function destroy(string $modulo_id, string $submodulo_id)
     {
-        $submodulo = SubModulo::findOrFail($id);
+        $submodulo = SubModulo::findOrFail($submodulo_id);
 
         $submodulo->delete();
 
