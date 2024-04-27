@@ -67,19 +67,20 @@ class SubmoduloController extends Controller
      *      ),
      * )
      */
-    public function store(StoreSubmoduloRequest $request)
+    public function store(StoreSubmoduloRequest $request, string $modulo_id)
     {
-        $request = $request->validated();
+        $data = $request->validated();
+        $data['modulo_id'] = $modulo_id;
 
-        if (isset($request['img_reference'])) {
-            $img = $request['img_reference'];
+        if (isset($data['img_reference'])) {
+            $img = $data['img_reference'];
 
             $path = $img->store('images/aulas', 'public');
 
-            $request['img_reference'] = $path;
+            $data['img_reference'] = $path;
         }
 
-        $submodulo = Submodulo::create($request);
+        $submodulo = Submodulo::create($data);
 
         return SubmoduloResource::make($submodulo);
     }
