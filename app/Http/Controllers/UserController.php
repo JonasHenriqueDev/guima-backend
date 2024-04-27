@@ -9,7 +9,6 @@ use App\Models\Aluno;
 use App\Models\Professor;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -68,7 +67,7 @@ class UserController extends Controller
      *              type="object",
      *              @OA\Property(property="name", type="string", example="Joao"),
      *              @OA\Property(property="email", type="string", example="joao@email.com"),
-     *              @OA\Property(property="birth_date", type="string", example="01-01-2003"),
+     *              @OA\Property(property="birth_date", type="string", example="2003-01-01"),
      *              @OA\Property(property="cpf", type="string", example="111.111.111-13"),
      *              @OA\Property(property="address", type="string", example="Rua teste"),
      *              @OA\Property(property="profile_type", type="string", example="aluno"),

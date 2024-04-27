@@ -109,10 +109,10 @@ class SubmoduloController extends Controller
      *         )
      * )
      */
-    public function show(string $moduloId, string $submoduloId)
+    public function show(string $modulo_id, string $submodulo_id)
     {
-        $submodulo = Submodulo::where('modulo_id', $moduloId)
-            ->where('id', $submoduloId)
+        $submodulo = Submodulo::where('modulo_id', $modulo_id)
+            ->where('id', $submodulo_id)
             ->with('aulas')
             ->firstOrFail();
 
@@ -190,7 +190,7 @@ class SubmoduloController extends Controller
      *          required=true,
      *         ),
      *      @OA\Parameter(
-     *          name="sybmodulo_id",
+     *          name="submodulo_id",
      *          in="path",
      *          description="Id do submodulo",
      *          required=true,
