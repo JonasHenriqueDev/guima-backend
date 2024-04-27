@@ -150,7 +150,7 @@ class ModuloController extends Controller
      *     summary="Deletar um modulo específico por id",
      *     tags={"Modulos"},
      *     security={{"bearerAuth": {}}},
-     *     @OA\Response(response="200", description="Retorna o modulo deletado"),
+     *     @OA\Response(response="204", description="Modulo deletado com sucesso"),
      *     security={
      *          { "apiAuth": {} }
      *     },

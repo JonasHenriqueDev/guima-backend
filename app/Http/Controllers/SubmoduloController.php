@@ -179,7 +179,7 @@ class SubmoduloController extends Controller
      *     summary="Deletar um submodulo específico por id",
      *     tags={"Submodulos"},
      *     security={{"bearerAuth": {}}},
-     *     @OA\Response(response="200", description="Retorna o submodulo deletado"),
+     *     @OA\Response(response="204", description="Submodulo deletado com sucesso"),
      *     security={
      *          { "apiAuth": {} }
      *     },
