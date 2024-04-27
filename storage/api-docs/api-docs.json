@@ -666,8 +666,8 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Retorna o modulo deletado"
+                    "204": {
+                        "description": "Modulo deletado com sucesso"
                     }
                 },
                 "security": [
@@ -860,15 +860,15 @@
                         "required": true
                     },
                     {
-                        "name": "sybmodulo_id",
+                        "name": "submodulo_id",
                         "in": "path",
                         "description": "Id do submodulo",
                         "required": true
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Retorna o submodulo deletado"
+                    "204": {
+                        "description": "Submodulo deletado com sucesso"
                     }
                 },
                 "security": [
