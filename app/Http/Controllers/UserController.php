@@ -90,7 +90,7 @@ class UserController extends Controller
             return $this->error('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         
-        $cpf = preg_replace('/\D/', '', $data['cpf']);
+        $cpf = preg_replace('/[^0-9]/', '', $data['cpf']);
         
         switch ($profileType) {
             case 'professor':
