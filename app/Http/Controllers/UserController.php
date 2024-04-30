@@ -92,7 +92,7 @@ class UserController extends Controller
         
         $cpf = $data['cpf'];
         $cpfNumeros = str_replace(array('.','-','/'), "", $cpf);
-
+        dd($cpfNumeros);
         switch ($profileType) {
             case 'professor':
                 $professor = Professor::create();
