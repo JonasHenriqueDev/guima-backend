@@ -89,9 +89,9 @@ class UserController extends Controller
         if (!in_array($profileType, $allowedProfileTypes)) {
             return $this->error('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
-        $cpf = $data['cpf'];
-
+        
+        $cpf = preg_replace('/\D/', '', $data['cpf']);
+        
         switch ($profileType) {
             case 'professor':
                 $professor = Professor::create();
