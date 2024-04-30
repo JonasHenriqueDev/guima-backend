@@ -133,8 +133,9 @@ class AlunoController extends Controller
     public function destroy(string $id)
     {
         $aluno = $this->repository->findOrFail($id);
+        $user = User::where('profile_type', 'App\Models\Aluno')->where('profile_id', $aluno->id)->first();
         $aluno->delete();
-
-        return $this->response('Aluno deleted', Response::HTTP_NO_CONTENT);
+        $user->delete();
+        return $this->response('Aluno deletado com sucesso!', Response::HTTP_NO_CONTENT);
     }
 }
