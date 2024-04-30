@@ -21,7 +21,7 @@ class AlunosResource extends JsonResource
     {
         $alunos = Aluno::where('id', $this->profile_id)->first();
         return [
-            'id' => $this->id,
+            'id' => $alunos->id,
             'name' => $this->name,
             'birth_date' => Carbon::parse($this->birth_date)->format('d/m/Y'),
             'cpf' => $this->cpf,
