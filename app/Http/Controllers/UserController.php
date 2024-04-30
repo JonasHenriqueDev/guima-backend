@@ -92,16 +92,16 @@ class UserController extends Controller
         
         $cpf = $data['cpf'];
         $cpfNumeros = str_replace(array('.','-','/'), "", $cpf);
-        dd($cpfNumeros);
+        
         switch ($profileType) {
             case 'professor':
                 $professor = Professor::create();
-                $user = $professor->user()->create($data + ['password' => Hash::make($cpfNumeros)]);
+                $user = $professor->user()->create($data + ['password' => Hash::make($cpfNumeros)] + ['cpf' => $cpfNumeros]);
                 break;
             case 'aluno':
                 $alunoData = Arr::only($data, ['plano', 'vencimento', 'status']);
                 $aluno = Aluno::create($alunoData);
-                $user = $aluno->user()->create($data + ['password' => Hash::make($cpfNumeros)]);
+                $user = $aluno->user()->create($data + ['password' => Hash::make($cpfNumeros)] + ['cpf' => $cpfNumeros]);
                 break;
             default:
                 return $this->error('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
