@@ -91,7 +91,7 @@ class UserController extends Controller
         }
         
         $cpf = preg_replace('/[^0-9]/', '', $data['cpf']);
-        
+        dd($cpf);
         switch ($profileType) {
             case 'professor':
                 $professor = Professor::create();
