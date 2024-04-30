@@ -62,8 +62,8 @@ class AlunoController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::where('profile_type', 'App\Models\Aluno')->where('profile_id', $id)->first();
-        $aluno = $this->repository->where('id', $user->id)->first();
+        $user = User::findOrFail($id);
+        $aluno = $this->repository->where('id', $user->profile_id)->first();
 
         return new AlunoResource($aluno);
     }
