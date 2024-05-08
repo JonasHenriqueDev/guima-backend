@@ -81,7 +81,7 @@ class AulaController extends Controller
         if (isset($request['img_reference'])) {
             $img = $request['img_reference'];
 
-            $path = $img->store('images', 'public');
+            $path = $img->store('images');
 
             $data['img_reference'] = $path;
         }

@@ -62,7 +62,7 @@ class ModuloController extends Controller
         if (isset($request['img_reference'])) {
             $img = $request['img_reference'];
 
-            $path = $img->store('images/aulas', 'public');
+            $path = $img->store('images');
 
             $request['img_reference'] = $path;
         }

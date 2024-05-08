@@ -75,7 +75,7 @@ class SubmoduloController extends Controller
         if (isset($data['img_reference'])) {
             $img = $data['img_reference'];
 
-            $path = $img->store('images/aulas', 'public');
+            $path = $img->store('images');
 
             $data['img_reference'] = $path;
         }
