@@ -205,7 +205,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/guima-backend-lambda/prod/1715173906527-2024-05-08T13:11:46.527Z/guima-backend-lambda.zip"
+                "S3Key": "serverless/guima-backend-lambda/prod/1715189640146-2024-05-08T17:34:00.146Z/guima-backend-lambda.zip"
               },
               "Handler": "public/index.php",
               "Runtime": "provided.al2",
@@ -224,7 +224,8 @@
                 ]
               },
               "Layers": [
-                "arn:aws:lambda:sa-east-1:534081306603:layer:php-81-fpm:76"
+                "arn:aws:lambda:sa-east-1:534081306603:layer:php-81-fpm:76",
+                "arn:aws:lambda:sa-east-1:403367587399:layer:gd-php-81:15"
               ]
             },
             "DependsOn": [
@@ -238,7 +239,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/guima-backend-lambda/prod/1715173906527-2024-05-08T13:11:46.527Z/guima-backend-lambda.zip"
+                "S3Key": "serverless/guima-backend-lambda/prod/1715189640146-2024-05-08T17:34:00.146Z/guima-backend-lambda.zip"
               },
               "Handler": "artisan",
               "Runtime": "provided.al2",
@@ -265,24 +266,24 @@
               "ArtisanLogGroup"
             ]
           },
-          "WebsiteLambdaVersionqv9Z9besmNuqNO6k9HU8XfQBANGVdQgsK1Ikbm0s": {
+          "WebsiteLambdaVersionRvVRMwB1BY6ZexidOHDve1qGOfpBTcpod78yLZcZAFg": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "WebsiteLambdaFunction"
               },
-              "CodeSha256": "Hd6g/18P2Wj4UVUdS3Lc4kw5r3QqR/Fsl1poIm89M5E="
+              "CodeSha256": "TBYGhfRbJR8Qc2l3PonyiRnsAelLg69cOiRrFnATQt0="
             }
           },
-          "ArtisanLambdaVersionsX3VCyD7iACjHS2wb0kGBbIlWGLIHEuUo9Vj27Vrmk": {
+          "ArtisanLambdaVersion4lTEq9aifXIuF8gxHUx4ZzHm5HaeswNxyfZDRZJ8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ArtisanLambdaFunction"
               },
-              "CodeSha256": "Hd6g/18P2Wj4UVUdS3Lc4kw5r3QqR/Fsl1poIm89M5E="
+              "CodeSha256": "TBYGhfRbJR8Qc2l3PonyiRnsAelLg69cOiRrFnATQt0="
             }
           },
           "ApiGatewayRestApi": {
@@ -410,7 +411,7 @@
               "WebsiteLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1715173867173": {
+          "ApiGatewayDeployment1715189596125": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -473,7 +474,7 @@
           "WebsiteLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "WebsiteLambdaVersionqv9Z9besmNuqNO6k9HU8XfQBANGVdQgsK1Ikbm0s"
+              "Ref": "WebsiteLambdaVersionRvVRMwB1BY6ZexidOHDve1qGOfpBTcpod78yLZcZAFg"
             },
             "Export": {
               "Name": "sls-guima-backend-lambda-prod-WebsiteLambdaFunctionQualifiedArn"
@@ -482,7 +483,7 @@
           "ArtisanLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ArtisanLambdaVersionsX3VCyD7iACjHS2wb0kGBbIlWGLIHEuUo9Vj27Vrmk"
+              "Ref": "ArtisanLambdaVersion4lTEq9aifXIuF8gxHUx4ZzHm5HaeswNxyfZDRZJ8"
             },
             "Export": {
               "Name": "sls-guima-backend-lambda-prod-ArtisanLambdaFunctionQualifiedArn"
@@ -601,7 +602,8 @@
       "vpc": {}
     },
     "plugins": [
-      "./vendor/bref/bref"
+      "./vendor/bref/bref",
+      "./vendor/bref/extra-php-extensions"
     ],
     "pluginsData": {},
     "functions": {
@@ -624,7 +626,7 @@
         "memory": 1024,
         "runtime": "provided.al2",
         "vpc": {},
-        "versionLogicalId": "WebsiteLambdaVersionqv9Z9besmNuqNO6k9HU8XfQBANGVdQgsK1Ikbm0s"
+        "versionLogicalId": "WebsiteLambdaVersionRvVRMwB1BY6ZexidOHDve1qGOfpBTcpod78yLZcZAFg"
       },
       "artisan": {
         "handler": "artisan",
@@ -638,7 +640,7 @@
         "memory": 1024,
         "runtime": "provided.al2",
         "vpc": {},
-        "versionLogicalId": "ArtisanLambdaVersionsX3VCyD7iACjHS2wb0kGBbIlWGLIHEuUo9Vj27Vrmk"
+        "versionLogicalId": "ArtisanLambdaVersion4lTEq9aifXIuF8gxHUx4ZzHm5HaeswNxyfZDRZJ8"
       }
     },
     "configValidationMode": "warn",
@@ -661,7 +663,7 @@
         ],
         "artifactsS3KeyDirname": "serverless/guima-backend-lambda/prod/code-artifacts",
         "artifact": "/home/jonas/guima-backend/.serverless/guima-backend-lambda.zip",
-        "artifactDirectoryName": "serverless/guima-backend-lambda/prod/1715173906527-2024-05-08T13:11:46.527Z"
+        "artifactDirectoryName": "serverless/guima-backend-lambda/prod/1715189640146-2024-05-08T17:34:00.146Z"
       },
       "functions": {
         "$ref": "$[\"service\"][\"functions\"]"
@@ -672,7 +674,7 @@
     "artifact": "/home/jonas/guima-backend/.serverless/guima-backend-lambda.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/guima-backend-lambda/prod/1715173906527-2024-05-08T13:11:46.527Z",
+    "artifactDirectoryName": "serverless/guima-backend-lambda/prod/1715189640146-2024-05-08T17:34:00.146Z",
     "artifact": "guima-backend-lambda.zip"
   }
 }

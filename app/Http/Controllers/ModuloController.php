@@ -6,6 +6,7 @@ use App\Http\Requests\StoreModuloRequest;
 use App\Http\Requests\UpdateModuloRequest;
 use App\Http\Resources\ModuloResource;
 use App\Models\Modulo;
+use App\Services\ImageService;
 use Illuminate\Http\Response;
 
 class ModuloController extends Controller
@@ -61,8 +62,8 @@ class ModuloController extends Controller
 
         if (isset($request['img_reference'])) {
             $img = $request['img_reference'];
-
-            $path = $img->store('images');
+            
+            $path = ImageService::save($img);
 
             $request['img_reference'] = $path;
         }

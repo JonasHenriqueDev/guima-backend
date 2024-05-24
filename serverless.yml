@@ -22,6 +22,7 @@ provider:
 
 plugins:
     - ./vendor/bref/bref
+    - ./vendor/bref/extra-php-extensions
 
 package:
   exclude:
@@ -37,6 +38,7 @@ functions:
         timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
         layers:
             - ${bref:layer.php-81-fpm}
+            - ${bref-extra:gd-php-81}
         events:
             -   http: 'ANY /'
             -   http: 'ANY /{proxy+}'

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateSubmoduloRequest;
 use App\Http\Resources\SubmoduloResource;
 use App\Models\Submodulo;
 use App\Models\Aula;
+use App\Services\ImageService;
 use Illuminate\Http\Response;
 
 class SubmoduloController extends Controller
@@ -75,7 +76,7 @@ class SubmoduloController extends Controller
         if (isset($data['img_reference'])) {
             $img = $data['img_reference'];
 
-            $path = $img->store('images');
+            $path = ImageService::save($img);
 
             $data['img_reference'] = $path;
         }

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAulaRequest;
 use App\Http\Requests\UpdateAulaRequest;
 use App\Http\Resources\AulaResource;
 use App\Models\Aula;
+use App\Services\ImageService;
 use Illuminate\Http\Response;
 
 class AulaController extends Controller
@@ -81,7 +82,7 @@ class AulaController extends Controller
         if (isset($request['img_reference'])) {
             $img = $request['img_reference'];
 
-            $path = $img->store('images');
+            $path = ImageService::save($img);
 
             $data['img_reference'] = $path;
         }
