@@ -164,7 +164,7 @@ class SubmoduloController extends Controller
         if (isset($request['img_reference'])) {
             $img = $request['img_reference'];
 
-            $path = $img->store('images', 'public');
+            $path = ImageService::save($img);
 
             $request['img_reference'] = $path;
         }
@@ -202,7 +202,9 @@ class SubmoduloController extends Controller
     {
         $submodulo = SubModulo::findOrFail($submodulo_id);
 
+        $imgReference = $submodulo->img_reference;
         $submodulo->delete();
+        ImageService::delete($imgReference);
 
         return $this->response('Submodulo deletado com sucesso.', Response::HTTP_NO_CONTENT);
     }

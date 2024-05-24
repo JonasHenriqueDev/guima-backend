@@ -39,4 +39,16 @@ class ImageService
 
         return $path;
     }
+
+    public static function delete(string $path)
+    {
+        try {
+            Storage::delete($path);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Imagem não encontrada',
+                'status' => 404
+            ], HttpResponse::HTTP_NOT_FOUND);
+        }
+    }
 }

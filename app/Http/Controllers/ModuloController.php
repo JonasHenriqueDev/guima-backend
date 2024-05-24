@@ -135,7 +135,7 @@ class ModuloController extends Controller
         if (isset($request['img_reference'])) {
             $img = $request['img_reference'];
 
-            $path = $img->store('images', 'public');
+            $path = ImageService::save($img);
 
             $request['img_reference'] = $path;
         }
@@ -166,8 +166,10 @@ class ModuloController extends Controller
     public function destroy(string $id)
     {
         $modulo = Modulo::findOrFail($id);
-
+        
+        $imgReference = $modulo->img_reference;
         $modulo->delete();
+        ImageService::delete($imgReference);
 
         return $this->response('Modulo deletado com sucesso.', Response::HTTP_NO_CONTENT);
     }

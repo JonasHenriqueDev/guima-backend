@@ -181,7 +181,7 @@ class AulaController extends Controller
         if (isset($request['img_reference'])) {
             $img = $request['img_reference'];
 
-            $path = $img->store('images', 'public');
+            $path = ImageService::save($img);
 
             $request['img_reference'] = $path;
         }
@@ -226,7 +226,9 @@ class AulaController extends Controller
     {
         $aula = Aula::findOrFail($aula_id);
 
+        $imgReference = $aula->img_reference;
         $aula->delete();
+        ImageService::delete($imgReference);
 
         return $this->response('Aula deletada com sucesso.', Response::HTTP_NO_CONTENT);
     }
