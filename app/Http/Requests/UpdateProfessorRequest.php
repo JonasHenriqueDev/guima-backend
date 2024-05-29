@@ -22,7 +22,7 @@ class UpdateProfessorRequest extends FormRequest
     public function rules(): array
     {
         $rules['password'] = ['nullable', 'string', 'min:8', 'confirmed'];
-        $rules['email'] = ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $this->id];
+        $rules['email'] = ['string', 'email', 'max:255', 'unique:users,email,' . $this->id];
 
         return $rules;
     }
