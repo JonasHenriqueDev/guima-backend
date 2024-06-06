@@ -8,6 +8,7 @@ use App\Http\Resources\AulaResource;
 use App\Models\Aula;
 use App\Services\ImageService;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -50,12 +51,12 @@ class AulaController extends Controller
     {
         try {
             $aulas = Aula::where('submodulo_id', $submodulo_id)->paginate();
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error(self::INTERNAL_SERVER_ERROR);
-            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         return AulaResource::collection($aulas);
     }
@@ -97,7 +98,7 @@ class AulaController extends Controller
             if (isset($request['img_reference'])) {
                 $img = $request['img_reference'];
 
-            $path = ImageService::save($img);
+                $path = ImageService::save($img);
 
                 $data['img_reference'] = $path;
             }
@@ -107,7 +108,7 @@ class AulaController extends Controller
             return AulaResource::make($aula);
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return AulaResource::make($aula);
@@ -147,12 +148,12 @@ class AulaController extends Controller
     {
         try {
             $aula = Aula::where('submodulo_id', $submodulo_id)->where('id', $aula_id)->firstOrFail();
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error(self::INTERNAL_SERVER_ERROR);
-            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return AulaResource::make($aula);
@@ -211,7 +212,7 @@ class AulaController extends Controller
             if (isset($request['img_reference'])) {
                 $img = $request['img_reference'];
 
-            $path = ImageService::save($img);
+                $path = ImageService::save($img);
 
                 $request['img_reference'] = $path;
             }
@@ -219,12 +220,12 @@ class AulaController extends Controller
             $aula->update($request);
 
             return AulaResource::make($aula);
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -264,17 +265,17 @@ class AulaController extends Controller
         try {
             $aula = Aula::findOrFail($aula_id);
 
-        $imgReference = $aula->img_reference;
-        $aula->delete();
-        ImageService::delete($imgReference);
+            $imgReference = $aula->img_reference;
+            $aula->delete();
+            ImageService::delete($imgReference);
 
             return $this->response('Aula deletada com sucesso.', Response::HTTP_NO_CONTENT);
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

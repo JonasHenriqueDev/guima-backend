@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Services\Image;
 use App\Services\ImageService;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 class ImageController extends Controller
 {
@@ -54,12 +55,9 @@ class ImageController extends Controller
         try {
             $reference = request()->query('reference');
             return ImageService::get($reference);
-        } catch (NotFoundHttpException $e) {
+        } catch (Throwable $e) {
             Log::error($e->getMessage());
-            return $this->error(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return $this->error(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         }
     }
 

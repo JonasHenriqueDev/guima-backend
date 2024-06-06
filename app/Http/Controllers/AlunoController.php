@@ -9,6 +9,7 @@ use App\Http\Resources\AlunosResource;
 use App\Models\Aluno;
 use App\Models\User;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use OpenApi\Annotations as OA;
@@ -30,12 +31,12 @@ class AlunoController extends Controller
         try {
             $users = User::where('profile_type', 'App\Models\Aluno')->paginate();
             Log::info('Alunos listados: ' . json_encode($users));
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error(self::INTERNAL_SERVER_ERROR);
-            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         return AlunosResource::collection($users);
     }
@@ -45,7 +46,7 @@ class AlunoController extends Controller
         try {
             $aluno = $this->repository->findOrFail($id);
             Log::info('Aluno mostrado: ' . json_encode($aluno));
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
@@ -65,7 +66,7 @@ class AlunoController extends Controller
             $aluno->update($data);
             $user->update($data);
             Log::info('Aluno atualizado: ' . json_encode($aluno));
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
@@ -83,12 +84,12 @@ class AlunoController extends Controller
             $aluno->delete();
             $user->delete();
             Log::info('Aluno deletado: ' . $id);
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error(self::INTERNAL_SERVER_ERROR);
-            return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR, $e->getTrace());
         }
         return $this->response('Aluno deletado com sucesso!', Response::HTTP_NO_CONTENT);
     }

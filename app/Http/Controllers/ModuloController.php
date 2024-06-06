@@ -8,6 +8,7 @@ use App\Http\Resources\ModuloResource;
 use App\Models\Modulo;
 use App\Services\ImageService;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Mockery\Matcher\Not;
@@ -39,12 +40,12 @@ class ModuloController extends Controller
     {
         try {
             $modulos = Modulo::paginate();
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error(self::INTERNAL_SERVER_ERROR);
-            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         return ModuloResource::collection($modulos);
     }
@@ -77,7 +78,7 @@ class ModuloController extends Controller
 
         if (isset($request['img_reference'])) {
             $img = $request['img_reference'];
-            
+
             $path = ImageService::save($img);
 
             $request['img_reference'] = $path;
@@ -111,12 +112,12 @@ class ModuloController extends Controller
     {
         try {
             $modulo = Modulo::where('id', $id)->with('submodulos')->firstOrFail();
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error(self::INTERNAL_SERVER_ERROR);
-            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return ModuloResource::make($modulo);
@@ -160,7 +161,7 @@ class ModuloController extends Controller
             if (isset($request['img_reference'])) {
                 $img = $request['img_reference'];
 
-            $path = ImageService::save($img);
+                $path = ImageService::save($img);
 
                 $request['img_reference'] = $path;
             }
@@ -168,12 +169,12 @@ class ModuloController extends Controller
             $modulo->update($request);
 
             return ModuloResource::make($modulo);
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -197,12 +198,16 @@ class ModuloController extends Controller
      */
     public function destroy(string $id)
     {
-        $modulo = Modulo::findOrFail($id);
-        
-        $imgReference = $modulo->img_reference;
-        $modulo->delete();
-        ImageService::delete($imgReference);
+        try {
+            $modulo = Modulo::findOrFail($id);
 
+            $imgReference = $modulo->img_reference;
+            $modulo->delete();
+            ImageService::delete($imgReference);
+        } catch (ModelNotFoundException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        }
         return $this->response('Modulo deletado com sucesso.', Response::HTTP_NO_CONTENT);
     }
 }

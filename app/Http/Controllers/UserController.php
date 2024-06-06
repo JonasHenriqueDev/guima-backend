@@ -8,6 +8,7 @@ use App\Http\Requests\UserStoreUpdateFormRequest;
 use App\Models\Aluno;
 use App\Models\Professor;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
@@ -43,7 +44,7 @@ class UserController extends Controller
             $users = User::paginate();
         } catch (Exception $e) {
             Log::error(self::INTERNAL_SERVER_ERROR);
-            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         return UserResource::collection($users);
     }
@@ -97,7 +98,7 @@ class UserController extends Controller
         $allowedProfileTypes = ['professor', 'aluno'];
 
         if (!in_array($profileType, $allowedProfileTypes)) {
-            return $this->error('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->response('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $cpf = $data['cpf'];
@@ -114,7 +115,7 @@ class UserController extends Controller
                 $user = $aluno->user()->create($data + ['password' => Hash::make($cpfNumeros)] + ['cpf' => $cpfNumeros]);
                 break;
             default:
-                return $this->error('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
+                return $this->response('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return new UserResource($user);
@@ -142,12 +143,12 @@ class UserController extends Controller
     {
         try {
             $user = $this->repository->findOrFail($id);
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error(self::INTERNAL_SERVER_ERROR);
-            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         return new UserResource($user);
     }
@@ -192,7 +193,7 @@ class UserController extends Controller
             // }
 
             $user->update($data);
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         }
@@ -223,7 +224,7 @@ class UserController extends Controller
         try {
             $user = $this->repository->findOrFail($id);
             $user->delete();
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         }

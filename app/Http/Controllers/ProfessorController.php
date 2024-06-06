@@ -8,6 +8,7 @@ use App\Http\Resources\ProfessorResource;
 use App\Models\Professor;
 use App\Models\User;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -56,12 +57,12 @@ class ProfessorController extends Controller
     {
         try {
             $professor = $this->repository->findOrFail($id);
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error(self::INTERNAL_SERVER_ERROR);
-            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         return new ProfessorResource($professor);
     }
@@ -75,12 +76,12 @@ class ProfessorController extends Controller
             $professor = $this->repository->findOrFail($id);
             $data = $request->validated();
             $professor->update($data);
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return new ProfessorResource($professor);
@@ -94,12 +95,9 @@ class ProfessorController extends Controller
         try {
         $professor = $this->repository->findOrFail($id);
         $professor->delete();
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
-        } catch (Exception $e) {
-            Log::error(self::INTERNAL_SERVER_ERROR);
-            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         return $this->response('Professor deleted', Response::HTTP_NO_CONTENT);
     }

@@ -9,6 +9,7 @@ use App\Models\Submodulo;
 use App\Models\Aula;
 use App\Services\ImageService;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -122,12 +123,12 @@ class SubmoduloController extends Controller
                 ->where('id', $submodulo_id)
                 ->with('aulas')
                 ->firstOrFail();
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error(self::INTERNAL_SERVER_ERROR);
-            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         return SubmoduloResource::make($submodulo);
     }
@@ -177,18 +178,18 @@ class SubmoduloController extends Controller
             if (isset($request['img_reference'])) {
                 $img = $request['img_reference'];
 
-            $path = ImageService::save($img);
+                $path = ImageService::save($img);
 
                 $request['img_reference'] = $path;
             }
 
             $submodulo->update($request);
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
             return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         return SubmoduloResource::make($submodulo);
     }
@@ -219,12 +220,16 @@ class SubmoduloController extends Controller
      */
     public function destroy(string $modulo_id, string $submodulo_id)
     {
-        $submodulo = SubModulo::findOrFail($submodulo_id);
+        try {
+            $submodulo = SubModulo::findOrFail($submodulo_id);
 
-        $imgReference = $submodulo->img_reference;
-        $submodulo->delete();
-        ImageService::delete($imgReference);
-
+            $imgReference = $submodulo->img_reference;
+            $submodulo->delete();
+            ImageService::delete($imgReference);
+        } catch (ModelNotFoundException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        }
         return $this->response('Submodulo deletado com sucesso.', Response::HTTP_NO_CONTENT);
     }
 }
