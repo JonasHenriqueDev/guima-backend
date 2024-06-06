@@ -7,10 +7,17 @@ use App\Http\Requests\UpdateModuloRequest;
 use App\Http\Resources\ModuloResource;
 use App\Models\Modulo;
 use App\Services\ImageService;
+use Exception;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Mockery\Matcher\Not;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ModuloController extends Controller
 {
+    const NOT_FOUND_MSG = 'Modulo não encontrado!';
+    const INTERNAL_SERVER_ERROR = 'Erro interno do servidor!';
+
     public function __construct()
     {
         $this->middleware('auth:sanctum');
@@ -30,7 +37,15 @@ class ModuloController extends Controller
      */
     public function index()
     {
-        $modulos = Modulo::with('submodulos')->paginate();
+        try {
+            $modulos = Modulo::paginate();
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error(self::INTERNAL_SERVER_ERROR);
+            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
         return ModuloResource::collection($modulos);
     }
 
@@ -73,6 +88,7 @@ class ModuloController extends Controller
         return ModuloResource::make($modulo);
     }
 
+
     /**
      * @OA\Get(
      *     path="/api/v1/modulos/{modulo_id}",
@@ -93,7 +109,15 @@ class ModuloController extends Controller
      */
     public function show(string $id)
     {
-        $modulo = Modulo::where('id', $id)->with('submodulos')->firstOrFail();
+        try {
+            $modulo = Modulo::where('id', $id)->with('submodulos')->firstOrFail();
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error(self::INTERNAL_SERVER_ERROR);
+            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return ModuloResource::make($modulo);
     }
@@ -128,21 +152,29 @@ class ModuloController extends Controller
      */
     public function update(UpdateModuloRequest $request, string $id)
     {
-        $modulo = Modulo::findOrFail($id);
+        try {
+            $modulo = Modulo::findOrFail($id);
 
-        $request = $request->validated();
+            $request = $request->validated();
 
-        if (isset($request['img_reference'])) {
-            $img = $request['img_reference'];
+            if (isset($request['img_reference'])) {
+                $img = $request['img_reference'];
 
             $path = ImageService::save($img);
 
-            $request['img_reference'] = $path;
+                $request['img_reference'] = $path;
+            }
+
+            $modulo->update($request);
+
+            return ModuloResource::make($modulo);
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        $modulo->update($request);
-
-        return ModuloResource::make($modulo);
     }
 
     /**

@@ -80,7 +80,7 @@ class LoginController extends Controller
             return $response;
         }
 
-        return $this->error('Unauthorized', Response::HTTP_UNAUTHORIZED);
+        return $this->error('Não autorizado', Response::HTTP_UNAUTHORIZED);
     }
 
     /**

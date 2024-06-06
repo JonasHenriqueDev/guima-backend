@@ -4,10 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Services\Image;
 use App\Services\ImageService;
+
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ImageController extends Controller
 {
+    const NOT_FOUND_MSG = 'Imagem não encontrada!';
+    const INTERNAL_SERVER_ERROR = 'Erro interno do servidor!';
+
     /**
      * Display a listing of the resource.
      */
@@ -44,8 +51,16 @@ class ImageController extends Controller
      */
     public function show()
     {
-        $reference = request()->query('reference');
-        return ImageService::get($reference);
+        try {
+            $reference = request()->query('reference');
+            return ImageService::get($reference);
+        } catch (NotFoundHttpException $e) {
+            Log::error($e->getMessage());
+            return $this->error(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return $this->error(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**

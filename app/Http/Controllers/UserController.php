@@ -7,12 +7,18 @@ use App\Models\User;
 use App\Http\Requests\UserStoreUpdateFormRequest;
 use App\Models\Aluno;
 use App\Models\Professor;
+use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
 {
+    const NOT_FOUND_MSG = 'Usuário não encontrado!';
+    const INTERNAL_SERVER_ERROR = 'Erro interno do servidor!';
+
     public function __construct(
         protected User $repository,
     ) {
@@ -33,8 +39,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate();
-
+        try {
+            $users = User::paginate();
+        } catch (Exception $e) {
+            Log::error(self::INTERNAL_SERVER_ERROR);
+            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
         return UserResource::collection($users);
     }
 
@@ -89,10 +99,10 @@ class UserController extends Controller
         if (!in_array($profileType, $allowedProfileTypes)) {
             return $this->error('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        
+
         $cpf = $data['cpf'];
-        $cpfNumeros = str_replace(array('.','-','/'), "", $cpf);
-        
+        $cpfNumeros = str_replace(array('.', '-', '/'), "", $cpf);
+
         switch ($profileType) {
             case 'professor':
                 $professor = Professor::create();
@@ -130,8 +140,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = $this->repository->findOrFail($id);
-
+        try {
+            $user = $this->repository->findOrFail($id);
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error(self::INTERNAL_SERVER_ERROR);
+            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
         return new UserResource($user);
     }
 
@@ -165,16 +182,20 @@ class UserController extends Controller
      */
     public function update(UserStoreUpdateFormRequest $request, string $id)
     {
-        $user = $this->repository->findOrFail($id);
+        try {
+            $user = $this->repository->findOrFail($id);
 
-        $data = $request->validated();
+            $data = $request->validated();
 
-        // if ($request->password) {
-        //     $data['password'] = Hash::make($data['password']);
-        // }
+            // if ($request->password) {
+            //     $data['password'] = Hash::make($data['password']);
+            // }
 
-        $user->update($data);
-
+            $user->update($data);
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        }
         return new UserResource($user);
     }
 
@@ -199,9 +220,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = $this->repository->findOrFail($id);
-        $user->delete();
-
+        try {
+            $user = $this->repository->findOrFail($id);
+            $user->delete();
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        }
         return $this->response('Usuário deletado com sucesso', Response::HTTP_NO_CONTENT);
     }
 }

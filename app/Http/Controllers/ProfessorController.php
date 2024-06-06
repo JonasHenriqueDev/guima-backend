@@ -7,10 +7,16 @@ use App\Http\Requests\UpdateProfessorRequest;
 use App\Http\Resources\ProfessorResource;
 use App\Models\Professor;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProfessorController extends Controller
 {
+    const NOT_FOUND_MSG = 'Professor não encontrado!';
+    const INTERNAL_SERVER_ERROR = 'Erro interno do servidor!';
+
     public function __construct(
         protected Professor $repository,
     ) {
@@ -22,7 +28,11 @@ class ProfessorController extends Controller
      */
     public function index()
     {
-        $professores = User::where('profile_type', 'aluno')->paginate();
+        try {
+            $professores = $this->repository->paginate();
+        } catch (Exception $e) {
+            Log::error(self::INTERNAL_SERVER_ERROR);
+        }
 
         return ProfessorResource::collection($professores);
     }
@@ -44,8 +54,15 @@ class ProfessorController extends Controller
      */
     public function show(string $id)
     {
-        $professor = $this->repository->findOrFail($id);
-
+        try {
+            $professor = $this->repository->findOrFail($id);
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error(self::INTERNAL_SERVER_ERROR);
+            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
         return new ProfessorResource($professor);
     }
 
@@ -54,9 +71,17 @@ class ProfessorController extends Controller
      */
     public function update(UpdateProfessorRequest $request, string $id)
     {
-        $professor = $this->repository->findOrFail($id);
-        $data = $request->validated();
-        $professor->update($data);
+        try {
+            $professor = $this->repository->findOrFail($id);
+            $data = $request->validated();
+            $professor->update($data);
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return new ProfessorResource($professor);
     }
@@ -66,9 +91,16 @@ class ProfessorController extends Controller
      */
     public function destroy(string $id)
     {
+        try {
         $professor = $this->repository->findOrFail($id);
         $professor->delete();
-
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error(self::INTERNAL_SERVER_ERROR);
+            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
         return $this->response('Professor deleted', Response::HTTP_NO_CONTENT);
     }
 }

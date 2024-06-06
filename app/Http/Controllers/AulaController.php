@@ -7,10 +7,16 @@ use App\Http\Requests\UpdateAulaRequest;
 use App\Http\Resources\AulaResource;
 use App\Models\Aula;
 use App\Services\ImageService;
+use Exception;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AulaController extends Controller
 {
+    const NOT_FOUND_MSG = 'Aula não encontrada!';
+    const INTERNAL_SERVER_ERROR = 'Erro interno do servidor!';
+
     public function __construct()
     {
         $this->middleware('auth:sanctum');
@@ -42,7 +48,15 @@ class AulaController extends Controller
      */
     public function index(string $modulo_id, string $submodulo_id)
     {
-        $aulas = Aula::where('submodulo_id', $submodulo_id)->paginate();
+        try {
+            $aulas = Aula::where('submodulo_id', $submodulo_id)->paginate();
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error(self::INTERNAL_SERVER_ERROR);
+            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
         return AulaResource::collection($aulas);
     }
 
@@ -73,21 +87,28 @@ class AulaController extends Controller
      */
     public function store(StoreAulaRequest $request, string $modulo_id, string $submodulo_id)
     {
-        $data = $request->validated();
+        try {
+            $data = $request->validated();
 
-        $data['modulo_id'] = $modulo_id;
-        $data['submodulo_id'] = $submodulo_id;
+            $data['modulo_id'] = $modulo_id;
+            $data['submodulo_id'] = $submodulo_id;
 
 
-        if (isset($request['img_reference'])) {
-            $img = $request['img_reference'];
+            if (isset($request['img_reference'])) {
+                $img = $request['img_reference'];
 
             $path = ImageService::save($img);
 
-            $data['img_reference'] = $path;
-        }
+                $data['img_reference'] = $path;
+            }
 
-        $aula = Aula::create($data);
+            $aula = Aula::create($data);
+
+            return AulaResource::make($aula);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return AulaResource::make($aula);
     }
@@ -124,7 +145,15 @@ class AulaController extends Controller
      */
     public function show(string $modulo_id, string $submodulo_id, string $aula_id)
     {
-        $aula = Aula::findOrFail($aula_id);
+        try {
+            $aula = Aula::where('submodulo_id', $submodulo_id)->where('id', $aula_id)->firstOrFail();
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error(self::INTERNAL_SERVER_ERROR);
+            return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return AulaResource::make($aula);
     }
@@ -174,21 +203,29 @@ class AulaController extends Controller
      */
     public function update(UpdateAulaRequest $request, string $modulo_id, string $submodulo_id, string $aula_id)
     {
-        $request = $request->validated();
+        try {
+            $request = $request->validated();
 
-        $aula = Aula::findOrFail($aula_id);
+            $aula = Aula::findOrFail($aula_id);
 
-        if (isset($request['img_reference'])) {
-            $img = $request['img_reference'];
+            if (isset($request['img_reference'])) {
+                $img = $request['img_reference'];
 
             $path = ImageService::save($img);
 
-            $request['img_reference'] = $path;
+                $request['img_reference'] = $path;
+            }
+
+            $aula->update($request);
+
+            return AulaResource::make($aula);
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        $aula->update($request);
-
-        return AulaResource::make($aula);
     }
 
     /**
@@ -224,12 +261,20 @@ class AulaController extends Controller
      */
     public function destroy(string $modulo_id, string $submodulo_id, string $aula_id)
     {
-        $aula = Aula::findOrFail($aula_id);
+        try {
+            $aula = Aula::findOrFail($aula_id);
 
         $imgReference = $aula->img_reference;
         $aula->delete();
         ImageService::delete($imgReference);
 
-        return $this->response('Aula deletada com sucesso.', Response::HTTP_NO_CONTENT);
+            return $this->response('Aula deletada com sucesso.', Response::HTTP_NO_CONTENT);
+        } catch (NotFoundHttpException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
