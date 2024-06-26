@@ -24,7 +24,7 @@ class UserStoreUpdateFormRequest extends FormRequest
         if ($this->method() === 'PATCH') {
             // $rules['password'] = ['nullable', 'string', 'min:8', 'confirmed'];
 
-            $rules['email'] = ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $this->id];
+            $rules['email'] = ['string', 'email', 'max:255', 'unique:users,email,' . $this->id];
         } else {
             $rules = [
                 'name' => ['required', 'string', 'max:255'],

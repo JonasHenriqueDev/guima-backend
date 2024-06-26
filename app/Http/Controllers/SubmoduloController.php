@@ -7,10 +7,17 @@ use App\Http\Requests\UpdateSubmoduloRequest;
 use App\Http\Resources\SubmoduloResource;
 use App\Models\Submodulo;
 use App\Models\Aula;
+use App\Services\ImageService;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SubmoduloController extends Controller
 {
+    const NOT_FOUND_MSG = 'Submodulo não encontrado!';
+    const INTERNAL_SERVER_ERROR = 'Erro interno do servidor!';
     /**
      * @OA\Get(
      *     path="/api/v1/modulos/{modulo_id}/submodulos",
@@ -75,7 +82,7 @@ class SubmoduloController extends Controller
         if (isset($data['img_reference'])) {
             $img = $data['img_reference'];
 
-            $path = $img->store('images/aulas', 'public');
+            $path = ImageService::save($img);
 
             $data['img_reference'] = $path;
         }
@@ -111,11 +118,18 @@ class SubmoduloController extends Controller
      */
     public function show(string $modulo_id, string $submodulo_id)
     {
-        $submodulo = Submodulo::where('modulo_id', $modulo_id)
-            ->where('id', $submodulo_id)
-            ->with('aulas')
-            ->firstOrFail();
-
+        try {
+            $submodulo = Submodulo::where('modulo_id', $modulo_id)
+                ->where('id', $submodulo_id)
+                ->with('aulas')
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error(self::INTERNAL_SERVER_ERROR);
+            return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
         return SubmoduloResource::make($submodulo);
     }
 
@@ -156,20 +170,27 @@ class SubmoduloController extends Controller
      */
     public function update(UpdateSubmoduloRequest $request, string $modulo_id, string $submodulo_id)
     {
-        $submodulo = SubModulo::findOrFail($submodulo_id);
+        try {
+            $submodulo = SubModulo::findOrFail($submodulo_id);
 
-        $request = $request->validated();
+            $request = $request->validated();
 
-        if (isset($request['img_reference'])) {
-            $img = $request['img_reference'];
+            if (isset($request['img_reference'])) {
+                $img = $request['img_reference'];
 
-            $path = $img->store('images', 'public');
+                $path = ImageService::save($img);
 
-            $request['img_reference'] = $path;
+                $request['img_reference'] = $path;
+            }
+
+            $submodulo->update($request);
+        } catch (ModelNotFoundException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        $submodulo->update($request);
-
         return SubmoduloResource::make($submodulo);
     }
 
@@ -199,10 +220,16 @@ class SubmoduloController extends Controller
      */
     public function destroy(string $modulo_id, string $submodulo_id)
     {
-        $submodulo = SubModulo::findOrFail($submodulo_id);
+        try {
+            $submodulo = SubModulo::findOrFail($submodulo_id);
 
-        $submodulo->delete();
-
+            $imgReference = $submodulo->img_reference;
+            $submodulo->delete();
+            ImageService::delete($imgReference);
+        } catch (ModelNotFoundException $e) {
+            Log::error(self::NOT_FOUND_MSG);
+            return $this->response(self::NOT_FOUND_MSG, Response::HTTP_NOT_FOUND);
+        }
         return $this->response('Submodulo deletado com sucesso.', Response::HTTP_NO_CONTENT);
     }
 }

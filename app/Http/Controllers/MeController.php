@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\MeResource;
+use Exception;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class MeController extends Controller
 {
@@ -21,7 +24,12 @@ class MeController extends Controller
      */
     public function me()
     {
-        $user = Auth::user();
+        try {
+            $user = Auth::user();
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->error($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return new MeResource($user);
     }

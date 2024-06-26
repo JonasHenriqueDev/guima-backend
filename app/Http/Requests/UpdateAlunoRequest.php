@@ -22,11 +22,11 @@ class UpdateAlunoRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => ['required', 'string', 'max:255'],
-            'birth_date' => ['required', 'date'],
-            'cpf' => ['required', 'string', 'max:14'],
-            'address' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'name' => ['string', 'max:255'],
+            'birth_date' => ['date'],
+            'cpf' => ['string', 'max:14'],
+            'address' => ['string', 'max:255'],
+            'email' => ['string', 'email', 'max:255'],
             // 'password' => ['required', 'string', 'min:8', 'confirmed'],
             'plano' => 'string',
             'vencimento' => 'date',

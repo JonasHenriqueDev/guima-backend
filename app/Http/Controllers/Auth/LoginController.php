@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
 
 class LoginController extends Controller
 {
@@ -78,7 +80,7 @@ class LoginController extends Controller
             return $response;
         }
 
-        return $this->error('Unauthorized', Response::HTTP_UNAUTHORIZED);
+        return $this->error('Não autorizado', Response::HTTP_UNAUTHORIZED);
     }
 
     /**
