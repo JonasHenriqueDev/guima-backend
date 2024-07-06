@@ -13,7 +13,7 @@ class Aluno extends Model
         'plano',
         'vencimento',
         'status',
-        
+        'is_new_user',
     ];
 
     public function user()

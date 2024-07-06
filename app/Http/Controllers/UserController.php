@@ -110,7 +110,7 @@ class UserController extends Controller
                 $user = $professor->user()->create($data + ['password' => Hash::make($cpfNumeros)] + ['cpf' => $cpfNumeros]);
                 break;
             case 'aluno':
-                $alunoData = Arr::only($data, ['plano', 'vencimento', 'status']);
+                $alunoData = Arr::only($data, ['plano', 'vencimento', 'status', 'is_new_user' => true]);
                 $aluno = Aluno::create($alunoData);
                 $user = $aluno->user()->create($data + ['password' => Hash::make($cpfNumeros)] + ['cpf' => $cpfNumeros]);
                 break;
