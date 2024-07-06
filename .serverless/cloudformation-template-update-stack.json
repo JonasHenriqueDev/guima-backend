@@ -179,7 +179,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/guima-backend-lambda/prod/1717003225577-2024-05-29T17:20:25.577Z/guima-backend-lambda.zip"
+          "S3Key": "serverless/guima-backend-lambda/prod/1718722929479-2024-06-18T15:02:09.479Z/guima-backend-lambda.zip"
         },
         "Handler": "public/index.php",
         "Runtime": "provided.al2",
@@ -213,7 +213,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/guima-backend-lambda/prod/1717003225577-2024-05-29T17:20:25.577Z/guima-backend-lambda.zip"
+          "S3Key": "serverless/guima-backend-lambda/prod/1718722929479-2024-06-18T15:02:09.479Z/guima-backend-lambda.zip"
         },
         "Handler": "artisan",
         "Runtime": "provided.al2",
@@ -240,24 +240,24 @@
         "ArtisanLogGroup"
       ]
     },
-    "WebsiteLambdaVersion3IKBDMFJw3RmOJCw0sk0r0Sa6JDCtMRI2zAGVxzZ5A": {
+    "WebsiteLambdaVersionlNgMfTtNwHyWhZmGWTv9yVf1omRZFA5xiwSCLEsQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "WebsiteLambdaFunction"
         },
-        "CodeSha256": "408YEge82tthd6ElqOG3roljCQJd121MYJ+4CWexMLE="
+        "CodeSha256": "cqQKC+UDPZ/lhpxPBgTqY/INokizEjPhDBRddUtIXUo="
       }
     },
-    "ArtisanLambdaVersionSiUs28QCS0YbAMJSMWACcJgOHD9xm8rOhOOZ9l7pOo": {
+    "ArtisanLambdaVersion4OsbkFKbl4FvnneGe209dbrQkxeEIpE2Jjxm4w9wYo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ArtisanLambdaFunction"
         },
-        "CodeSha256": "408YEge82tthd6ElqOG3roljCQJd121MYJ+4CWexMLE="
+        "CodeSha256": "cqQKC+UDPZ/lhpxPBgTqY/INokizEjPhDBRddUtIXUo="
       }
     },
     "ApiGatewayRestApi": {
@@ -385,7 +385,7 @@
         "WebsiteLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1717003173557": {
+    "ApiGatewayDeployment1718722880669": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -448,7 +448,7 @@
     "WebsiteLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "WebsiteLambdaVersion3IKBDMFJw3RmOJCw0sk0r0Sa6JDCtMRI2zAGVxzZ5A"
+        "Ref": "WebsiteLambdaVersionlNgMfTtNwHyWhZmGWTv9yVf1omRZFA5xiwSCLEsQ"
       },
       "Export": {
         "Name": "sls-guima-backend-lambda-prod-WebsiteLambdaFunctionQualifiedArn"
@@ -457,7 +457,7 @@
     "ArtisanLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ArtisanLambdaVersionSiUs28QCS0YbAMJSMWACcJgOHD9xm8rOhOOZ9l7pOo"
+        "Ref": "ArtisanLambdaVersion4OsbkFKbl4FvnneGe209dbrQkxeEIpE2Jjxm4w9wYo"
       },
       "Export": {
         "Name": "sls-guima-backend-lambda-prod-ArtisanLambdaFunctionQualifiedArn"

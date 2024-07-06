@@ -9,6 +9,7 @@ provider:
             - '*/*'
     environment:
         BREF_BINARY_RESPONSES: '1'
+        MAINTENANCE_MODE: ${param:maintenance, null}
     iamRoleStatements:
         # Allow to put a file in the `my-bucket` S3 bucket
         -   Effect: Allow
