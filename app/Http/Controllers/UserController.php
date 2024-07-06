@@ -9,6 +9,7 @@ use App\Models\Aluno;
 use App\Models\Professor;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
@@ -103,19 +104,24 @@ class UserController extends Controller
 
         $cpf = $data['cpf'];
         $cpfNumeros = str_replace(array('.', '-', '/'), "", $cpf);
-
-        switch ($profileType) {
-            case 'professor':
-                $professor = Professor::create();
-                $user = $professor->user()->create($data + ['password' => Hash::make($cpfNumeros)] + ['cpf' => $cpfNumeros]);
-                break;
-            case 'aluno':
-                $alunoData = Arr::only($data, ['plano', 'vencimento', 'status', 'is_new_user' => true]);
-                $aluno = Aluno::create($alunoData);
-                $user = $aluno->user()->create($data + ['password' => Hash::make($cpfNumeros)] + ['cpf' => $cpfNumeros]);
-                break;
-            default:
-                return $this->response('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
+        
+        try {
+            switch ($profileType) {
+                case 'professor':
+                    $professor = Professor::create();
+                    $user = $professor->user()->create($data + ['password' => Hash::make($cpfNumeros)] + ['cpf' => $cpfNumeros]);
+                    break;
+                case 'aluno':
+                    $alunoData = Arr::only($data, ['plano', 'vencimento', 'status']);
+                    $alunoData['is_new_user'] = true;
+                    $aluno = Aluno::create($alunoData);
+                    $user = $aluno->user()->create($data + ['password' => Hash::make($cpfNumeros)] + ['cpf' => $cpfNumeros]);
+                    break;
+                default:
+                    return $this->response('Tipo de perfil não reconhecido', Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+        } catch (UniqueConstraintViolationException $e) {
+            return $this->response('CPF já cadastrado', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return new UserResource($user);
