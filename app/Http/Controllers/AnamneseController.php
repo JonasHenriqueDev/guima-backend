@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAnamneseRequest;
 use App\Http\Requests\UpdateAnamneseRequest;
 use App\Http\Resources\AnamneseResource;
+use App\Models\Aluno;
 use App\Models\Anamnese;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class AnamneseController extends Controller
@@ -26,6 +30,7 @@ class AnamneseController extends Controller
      */
     public function store(StoreAnamneseRequest $request)
     {
+        //dd($request->all());
         $data = $request->validated();
         $data['cpf'] = preg_replace('/[^0-9]/', '', $data['cpf']);
 
@@ -34,7 +39,6 @@ class AnamneseController extends Controller
             if (Anamnese::where('cpf', $data['cpf'])->exists() || User::where('cpf', $data['cpf'])->exists() || User::where('cpf', $request->cpf)->exists()) {
                 return $this->error('Já existe uma anamnese para este CPF', 400);
             }
-
             $anamnese = Anamnese::create($data);
 
             return AnamneseResource::make($anamnese);
@@ -97,4 +101,23 @@ class AnamneseController extends Controller
         //
     }
 
+    public function aprovarAnamnese(string $id)
+    {
+        $anamnese = Anamnese::where('id', $id)->firstOrFail();
+
+        if ($anamnese->is_aprovada) {
+            return $this->error('Anamnese já foi aprovada', 400);
+        }
+
+
+        $alunoData = Arr::only($anamnese->toArray(), ['plano', 'vencimento', 'status']);
+        $alunoData['status'] = true;
+        $aluno = Aluno::create($alunoData);
+        $user = $aluno->user()->create($anamnese->toArray() + ['password' => Hash::make($anamnese->cpf)] + ['cpf' => $anamnese->cpf]);
+        
+        $anamnese->update(['is_aprovada' => true]);
+        $anamnese->save();
+
+        return $this->response('Anamnese aprovada com sucesso', Response::HTTP_OK);
+    }
 }

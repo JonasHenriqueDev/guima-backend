@@ -10,11 +10,19 @@ class Anamnese extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nome',
+        'name',
+        'birth_date',
+        'cpf',
+        'address',
+        'email',
+        'plano',
+        'vencimento',
+        'photo_reference',
         'idade',
         'peso',
         'altura',
         'objetivo',
-        'cpf',
+        'is_aprovada',
+        'campos_reprovados',
     ];
 }

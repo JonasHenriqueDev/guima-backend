@@ -22,12 +22,17 @@ class UpdateAnamneseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nome' => 'required',
-            'idade' => 'required',
-            'peso' => 'required',
-            'altura' => 'required',
-            'objetivo' => 'required',
-            'cpf' => 'required',
+            'name' => ['string', 'max:255'],
+            'birth_date' => 'date',
+            'cpf' => ['string', 'max:14'],
+            'address' => ['string', 'max:255'],
+            'email' => ['string', 'email', 'max:255', 'unique:users'],
+            'plano' => 'string',
+            'vencimento' => 'date',
+            'idade' => 'string',
+            'peso' => 'string',
+            'altura' => 'string',
+            'objetivo' => 'string',
         ];
     }
 }

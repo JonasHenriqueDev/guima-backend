@@ -22,12 +22,17 @@ class StoreAnamneseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nome' => 'required',
+            'name' => ['required', 'string', 'max:255'],
+            'birth_date' => ['required', 'date'],
+            'cpf' => ['required', 'string', 'max:14'],
+            'address' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'plano' => 'required',
+            'vencimento' => 'required',
             'idade' => 'required',
             'peso' => 'required',
             'altura' => 'required',
             'objetivo' => 'required',
-            'cpf' => 'required',
         ];
     }
 }
