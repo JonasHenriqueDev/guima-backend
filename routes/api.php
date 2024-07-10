@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlunoController;
+use App\Http\Controllers\AnamneseController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\ModuloController;
@@ -50,6 +51,11 @@ Route::prefix('api/v1')->middleware('json.response')->group(function () {
         Route::apiResource('submodulos', SubmoduloController::class);
         Route::apiResource('aulas', AulaController::class);
 
+        Route::prefix('anamnese')->group(function () {
+            Route::get('/', [AnamneseController::class, 'index']);
+            Route::post('/aprovar/{id}', [AnamneseController::class, 'aprovarAnamnese']);
+            Route::post('/reprovar/{id}', [AnamneseController::class, 'reprovarAnamnese']);
+        });
 
         // Rotas para Módulos, Submódulos e aulas
         Route::prefix('modulos')->group(function () {
@@ -84,5 +90,12 @@ Route::prefix('api/v1')->middleware('json.response')->group(function () {
                 Route::get('/{id}', [AulaController::class, 'show']);
             });
         });
+    });
+
+    // Rotas para novos usuários que farão anamnese
+    Route::prefix('anamnese')->group(function () {
+        Route::get('/{cpf}', [AnamneseController::class, 'show']);
+        Route::post('/', [AnamneseController::class, 'store']);
+        Route::patch('/{cpf}', [AnamneseController::class, 'update']);
     });
 });
