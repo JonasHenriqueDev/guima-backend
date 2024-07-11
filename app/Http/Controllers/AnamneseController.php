@@ -112,12 +112,14 @@ class AnamneseController extends Controller
 
         $alunoData = Arr::only($anamnese->toArray(), ['plano', 'vencimento', 'status']);
         $alunoData['status'] = true;
-        $aluno = Aluno::create($alunoData);
-        $user = $aluno->user()->create($anamnese->toArray() + ['password' => Hash::make($anamnese->cpf)] + ['cpf' => $anamnese->cpf]);
+        $alunoData['anamnese_id'] = $anamnese->id;
         
+        $aluno = Aluno::create($alunoData);
+
+        $user = $aluno->user()->create($anamnese->toArray() + ['password' => Hash::make($anamnese->cpf)] + ['cpf' => $anamnese->cpf]);
+
         $anamnese->update(['is_aprovada' => true]);
         $anamnese->save();
-
         return $this->response('Anamnese aprovada com sucesso', Response::HTTP_OK);
     }
 }

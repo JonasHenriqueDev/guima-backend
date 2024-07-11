@@ -74,4 +74,9 @@ class Anamnese extends Model
         'doenca_respiratoria',
         'doenca_neurologico'
     ];
+
+    public function aluno()
+    {
+        return $this->belongsTo(Aluno::class);
+    }
 }

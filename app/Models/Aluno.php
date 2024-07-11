@@ -14,6 +14,7 @@ class Aluno extends Model
         'vencimento',
         'status',
         'is_new_user',
+        'anamnese_id'
     ];
 
     public function user()
@@ -34,5 +35,10 @@ class Aluno extends Model
     public function avaliacao()
     {
         return $this->hasMany(Avaliacao::class);
+    }
+
+    public function anamnese()
+    {
+        return $this->hasOne(Anamnese::class);
     }
 }
