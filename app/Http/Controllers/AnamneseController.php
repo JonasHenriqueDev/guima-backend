@@ -10,6 +10,7 @@ use App\Models\Anamnese;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
@@ -20,9 +21,17 @@ class AnamneseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return AnamneseResource::collection(Anamnese::all());
+        $aprovada = $request->input('aprovadas');
+
+        $anamneses = Anamnese::query();
+
+        if ($aprovada === 'false') {
+            $anamneses->where('is_aprovada', false);
+        }
+
+        return AnamneseResource::collection($anamneses->get());
     }
 
     /**
@@ -113,7 +122,7 @@ class AnamneseController extends Controller
         $alunoData = Arr::only($anamnese->toArray(), ['plano', 'vencimento', 'status']);
         $alunoData['status'] = true;
         $alunoData['anamnese_id'] = $anamnese->id;
-        
+
         $aluno = Aluno::create($alunoData);
 
         $user = $aluno->user()->create($anamnese->toArray() + ['password' => Hash::make($anamnese->cpf)] + ['cpf' => $anamnese->cpf]);

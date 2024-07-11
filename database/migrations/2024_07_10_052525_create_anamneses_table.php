@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('anamneses', function (Blueprint $table) {
             $table->id();
+            //status
+            $table->boolean('is_aprovada')->default(false);
+
             // Dados pessoais
             $table->string('name');
             $table->string('cpf');

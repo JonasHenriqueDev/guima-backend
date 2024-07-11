@@ -10,6 +10,9 @@ class Anamnese extends Model
     use HasFactory;
 
     protected $fillable = [
+        //status 
+        'is_aprovada',
+
         // Dados pessoais
         'name',
         'cpf',
