@@ -131,4 +131,12 @@ class AnamneseController extends Controller
         $anamnese->save();
         return $this->response('Anamnese aprovada com sucesso', Response::HTTP_OK);
     }
+
+    public function reprovarAnamnese(string $id)
+    {
+        $anamnese = Anamnese::where('id', $id)->firstOrFail();
+        $anamnese->update(['is_aprovada' => false]);
+        $anamnese->save();
+        return $this->response('Anamnese reprovada', Response::HTTP_OK);
+    }
 }
