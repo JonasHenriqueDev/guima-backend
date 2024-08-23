@@ -6,6 +6,638 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/v1/anamnese": {
+            "get": {
+                "tags": [
+                    "Anamneses"
+                ],
+                "summary": "Listar todas as anamneses",
+                "operationId": "5033dbf4b5d0241439c57bdde4fe9243",
+                "parameters": [
+                    {
+                        "name": "aprovadas",
+                        "in": "query",
+                        "description": "Filtra as anamneses com base na aprovação. Use 'false' para buscar apenas as não aprovadas.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "true",
+                                "false"
+                            ],
+                            "example": "false"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de anamneses"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Anamneses"
+                ],
+                "summary": "Criar uma nova anamnese",
+                "operationId": "9978665d36df6fa899b334301ace0151",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "João da Silva"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "example": "12345372920"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "joao.ss2ilvas@example.com"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Rua das Flores, 123, Bairro Jardim"
+                                    },
+                                    "telefone": {
+                                        "type": "string",
+                                        "example": "(11) 91234-5678"
+                                    },
+                                    "plano": {
+                                        "type": "string",
+                                        "example": "semestral"
+                                    },
+                                    "vencimento": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-12-31"
+                                    },
+                                    "birth_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-05-15"
+                                    },
+                                    "altura_peso": {
+                                        "type": "string",
+                                        "example": "1.75m, 70kg"
+                                    },
+                                    "rotina": {
+                                        "type": "string",
+                                        "example": "Trabalho das 9h às 18h, faço academia à noite."
+                                    },
+                                    "indicacao": {
+                                        "type": "string",
+                                        "example": "Indicado por um amigo."
+                                    },
+                                    "profissao": {
+                                        "type": "string",
+                                        "example": "Engenheiro"
+                                    },
+                                    "objetivo": {
+                                        "type": "string",
+                                        "example": "Perder peso"
+                                    },
+                                    "acompanhamento_anterior": {
+                                        "type": "string",
+                                        "example": "Nutricionista"
+                                    },
+                                    "refeicoes_por_dia": {
+                                        "type": "string",
+                                        "example": "3"
+                                    },
+                                    "quantas_vezes_pode_comer": {
+                                        "type": "string",
+                                        "example": "5"
+                                    },
+                                    "agua_por_dia": {
+                                        "type": "string",
+                                        "example": "2 litros"
+                                    },
+                                    "horario_fome": {
+                                        "type": "string",
+                                        "example": "11h e 17h"
+                                    },
+                                    "cafe_manha": {
+                                        "type": "string",
+                                        "example": "Pão integral e suco"
+                                    },
+                                    "almoco": {
+                                        "type": "string",
+                                        "example": "Arroz, feijão e frango"
+                                    },
+                                    "entre_almoco_jantar": {
+                                        "type": "string",
+                                        "example": "Fruta e iogurte"
+                                    },
+                                    "jantar": {
+                                        "type": "string",
+                                        "example": "Salada e carne grelhada"
+                                    },
+                                    "beliscar": {
+                                        "type": "string",
+                                        "example": "Frutas secas"
+                                    },
+                                    "mais_alguma_ref": {
+                                        "type": "string",
+                                        "example": "Às vezes uma sobremesa"
+                                    },
+                                    "alimento_beliscar": {
+                                        "type": "string",
+                                        "example": "Nozes"
+                                    },
+                                    "alimentos_dia_dia": {
+                                        "type": "string",
+                                        "example": "Legumes, frutas e carnes"
+                                    },
+                                    "nao_alimentos_dia_dia": {
+                                        "type": "string",
+                                        "example": "Fast food"
+                                    },
+                                    "refeicao_pratica": {
+                                        "type": "string",
+                                        "example": "Marmitas prontas"
+                                    },
+                                    "balanca": {
+                                        "type": "string",
+                                        "example": "Sim"
+                                    },
+                                    "airfryer_bolsa": {
+                                        "type": "string",
+                                        "example": "Sim"
+                                    },
+                                    "alergia": {
+                                        "type": "string",
+                                        "example": "Nenhuma"
+                                    },
+                                    "bebida_alcoolica": {
+                                        "type": "string",
+                                        "example": "Socialmente"
+                                    },
+                                    "peso_1ano_3anos": {
+                                        "type": "string",
+                                        "example": "Estável"
+                                    },
+                                    "doce_salgados": {
+                                        "type": "string",
+                                        "example": "Doces"
+                                    },
+                                    "relacao_comida": {
+                                        "type": "string",
+                                        "example": "Normal"
+                                    },
+                                    "fazcoco": {
+                                        "type": "string",
+                                        "example": "Regularmente"
+                                    },
+                                    "horas_sono": {
+                                        "type": "string",
+                                        "example": "7 horas"
+                                    },
+                                    "nivel_treino": {
+                                        "type": "string",
+                                        "example": "Intermediário"
+                                    },
+                                    "dias_treino": {
+                                        "type": "string",
+                                        "example": "4"
+                                    },
+                                    "divisao_treino": {
+                                        "type": "string",
+                                        "example": "Musculação e cardio"
+                                    },
+                                    "aparelhos_academia": {
+                                        "type": "string",
+                                        "example": "Sim"
+                                    },
+                                    "plano_saude": {
+                                        "type": "string",
+                                        "example": "Sim"
+                                    },
+                                    "nivel_saude": {
+                                        "type": "string",
+                                        "example": "Bom"
+                                    },
+                                    "tem_medico": {
+                                        "type": "string",
+                                        "example": "Sim"
+                                    },
+                                    "fumante": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    },
+                                    "medicacoes": {
+                                        "type": "string",
+                                        "example": "Nenhuma"
+                                    },
+                                    "doencas_gastrointestinal": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    },
+                                    "doencas_cardiovascular": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    },
+                                    "doencas_osseas": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    },
+                                    "doenca_autoimune": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    },
+                                    "doenca_respiratoria": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    },
+                                    "doenca_neurologico": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna a anamnese criada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/anamnese/{cpf}": {
+            "get": {
+                "tags": [
+                    "Anamneses"
+                ],
+                "summary": "Mostrar uma anamnese pelo cpf",
+                "operationId": "77abff8d7d4521abd275c1687ecf0afa",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "description": "Cpf do aluno",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna uma anamnese pelo cpf"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Anamneses"
+                ],
+                "summary": "Atualizar uma anamnese",
+                "operationId": "48bb78e35b409ed036021d56a8af91d0",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "description": "CPF do aluno",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "João da Silva"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "example": "12345372920"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "joao.ss2ilvas@example.com"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Rua das Flores, 123, Bairro Jardim"
+                                    },
+                                    "telefone": {
+                                        "type": "string",
+                                        "example": "(11) 91234-5678"
+                                    },
+                                    "plano": {
+                                        "type": "string",
+                                        "example": "semestral"
+                                    },
+                                    "vencimento": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-12-31"
+                                    },
+                                    "birth_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-05-15"
+                                    },
+                                    "altura_peso": {
+                                        "type": "string",
+                                        "example": "1.75m, 70kg"
+                                    },
+                                    "rotina": {
+                                        "type": "string",
+                                        "example": "Trabalho das 9h às 18h, faço academia à noite."
+                                    },
+                                    "indicacao": {
+                                        "type": "string",
+                                        "example": "Indicado por um amigo."
+                                    },
+                                    "profissao": {
+                                        "type": "string",
+                                        "example": "Engenheiro"
+                                    },
+                                    "objetivo": {
+                                        "type": "string",
+                                        "example": "Perder peso"
+                                    },
+                                    "acompanhamento_anterior": {
+                                        "type": "string",
+                                        "example": "Nutricionista"
+                                    },
+                                    "refeicoes_por_dia": {
+                                        "type": "string",
+                                        "example": "3"
+                                    },
+                                    "quantas_vezes_pode_comer": {
+                                        "type": "string",
+                                        "example": "5"
+                                    },
+                                    "agua_por_dia": {
+                                        "type": "string",
+                                        "example": "2 litros"
+                                    },
+                                    "horario_fome": {
+                                        "type": "string",
+                                        "example": "11h e 17h"
+                                    },
+                                    "cafe_manha": {
+                                        "type": "string",
+                                        "example": "Pão integral e suco"
+                                    },
+                                    "almoco": {
+                                        "type": "string",
+                                        "example": "Arroz, feijão e frango"
+                                    },
+                                    "entre_almoco_jantar": {
+                                        "type": "string",
+                                        "example": "Fruta e iogurte"
+                                    },
+                                    "jantar": {
+                                        "type": "string",
+                                        "example": "Salada e carne grelhada"
+                                    },
+                                    "beliscar": {
+                                        "type": "string",
+                                        "example": "Frutas secas"
+                                    },
+                                    "mais_alguma_ref": {
+                                        "type": "string",
+                                        "example": "Às vezes uma sobremesa"
+                                    },
+                                    "alimento_beliscar": {
+                                        "type": "string",
+                                        "example": "Nozes"
+                                    },
+                                    "alimentos_dia_dia": {
+                                        "type": "string",
+                                        "example": "Legumes, frutas e carnes"
+                                    },
+                                    "nao_alimentos_dia_dia": {
+                                        "type": "string",
+                                        "example": "Fast food"
+                                    },
+                                    "refeicao_pratica": {
+                                        "type": "string",
+                                        "example": "Marmitas prontas"
+                                    },
+                                    "balanca": {
+                                        "type": "string",
+                                        "example": "Sim"
+                                    },
+                                    "airfryer_bolsa": {
+                                        "type": "string",
+                                        "example": "Sim"
+                                    },
+                                    "alergia": {
+                                        "type": "string",
+                                        "example": "Nenhuma"
+                                    },
+                                    "bebida_alcoolica": {
+                                        "type": "string",
+                                        "example": "Socialmente"
+                                    },
+                                    "peso_1ano_3anos": {
+                                        "type": "string",
+                                        "example": "Estável"
+                                    },
+                                    "doce_salgados": {
+                                        "type": "string",
+                                        "example": "Doces"
+                                    },
+                                    "relacao_comida": {
+                                        "type": "string",
+                                        "example": "Normal"
+                                    },
+                                    "fazcoco": {
+                                        "type": "string",
+                                        "example": "Regularmente"
+                                    },
+                                    "horas_sono": {
+                                        "type": "string",
+                                        "example": "7 horas"
+                                    },
+                                    "nivel_treino": {
+                                        "type": "string",
+                                        "example": "Intermediário"
+                                    },
+                                    "dias_treino": {
+                                        "type": "string",
+                                        "example": "4"
+                                    },
+                                    "divisao_treino": {
+                                        "type": "string",
+                                        "example": "Musculação e cardio"
+                                    },
+                                    "aparelhos_academia": {
+                                        "type": "string",
+                                        "example": "Sim"
+                                    },
+                                    "plano_saude": {
+                                        "type": "string",
+                                        "example": "Sim"
+                                    },
+                                    "nivel_saude": {
+                                        "type": "string",
+                                        "example": "Bom"
+                                    },
+                                    "tem_medico": {
+                                        "type": "string",
+                                        "example": "Sim"
+                                    },
+                                    "fumante": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    },
+                                    "medicacoes": {
+                                        "type": "string",
+                                        "example": "Nenhuma"
+                                    },
+                                    "doencas_gastrointestinal": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    },
+                                    "doencas_cardiovascular": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    },
+                                    "doencas_osseas": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    },
+                                    "doenca_autoimune": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    },
+                                    "doenca_respiratoria": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    },
+                                    "doenca_neurologico": {
+                                        "type": "string",
+                                        "example": "Não"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna a anamnese atualizada"
+                    },
+                    "404": {
+                        "description": "Anamnese não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/anamnese/aprovar/{id}": {
+            "post": {
+                "tags": [
+                    "Anamneses"
+                ],
+                "summary": "Aprovar uma anamnese",
+                "operationId": "593f06c53b890cbf52971d36d61abd1c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da anamnese",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Anamnese aprovada com sucesso"
+                    },
+                    "400": {
+                        "description": "Anamnese já foi aprovada"
+                    },
+                    "404": {
+                        "description": "Anamnese não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/anamnese/reprovar/{id}": {
+            "post": {
+                "tags": [
+                    "Anamneses"
+                ],
+                "summary": "Reprovar uma anamnese",
+                "operationId": "1b74b8e4ac5e164c64f40e1780987117",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da anamnese",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Anamnese reprovada com sucesso"
+                    },
+                    "404": {
+                        "description": "Anamnese não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/modulos/{modulo_id}/submodulos/{submodulo_id}/aulas": {
             "get": {
                 "tags": [
