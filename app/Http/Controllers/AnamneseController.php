@@ -307,7 +307,6 @@ class AnamneseController extends Controller
      *     tags={"Anamneses"},
      *     security={{"bearerAuth": {}}},
      *     description="OBS: Se uma anamnese for aprovada, será criado um novo aluno com os dados fornecidos no formulário de anamnese.",
-     *     
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
