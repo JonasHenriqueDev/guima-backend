@@ -569,6 +569,7 @@
                     "Anamneses"
                 ],
                 "summary": "Aprovar uma anamnese",
+                "description": "OBS: Se uma anamnese for aprovada, será criado um novo aluno com os dados fornecidos no formulário de anamnese.",
                 "operationId": "593f06c53b890cbf52971d36d61abd1c",
                 "parameters": [
                     {
