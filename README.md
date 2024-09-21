@@ -31,8 +31,6 @@ Para rodar a aplicação execute:
 
 A aplicação estará rodando no servidor NGINX em: http://localhost:8989/
 
-Também existe um cliente postgres em: http://localhost:5050/
-
 ## Documentação
 
 http://localhost:8989/api/docs
