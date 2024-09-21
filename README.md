@@ -21,9 +21,6 @@ Para rodar a aplicação execute:
   docker compose exec app bash
 ```
 ```bash
-  composer install
-```
-```bash
   php artisan key:generate
 ```
 ```bash
