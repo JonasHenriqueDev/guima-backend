@@ -1,42 +1,35 @@
-# Used for prod build.
-FROM php:8.1-fpm as php
+# Usando a imagem oficial do PHP com Laravel pré-configurado
+FROM php:8.1-fpm
 
-# Set environment variables
-ENV PHP_OPCACHE_ENABLE=1
-ENV PHP_OPCACHE_ENABLE_CLI=0
-ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS=0
-ENV PHP_OPCACHE_REVALIDATE_FREQ=0
+# Definindo diretório de trabalho
+WORKDIR /var/www/html
 
-# Install dependencies.
-RUN apt-get update && apt-get install -y unzip libpq-dev libcurl4-gnutls-dev nginx libonig-dev
+# Instalar dependências do sistema
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    libzip-dev \
+    unzip \
+    git \
+    curl \
+    && docker-php-ext-install pdo pdo_pgsql zip
 
-# Install PHP extensions.
-RUN docker-php-ext-install mysqli pdo pdo_mysql bcmath curl opcache mbstring
+# Instalar a extensão Redis
+RUN pecl install redis && docker-php-ext-enable redis
 
-# Copy composer executable.
-COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
+# Instalar Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy configuration files.
-COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
-COPY ./docker/php/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
-COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
+# Copiar todo o código Laravel para o container
+COPY . /var/www/html
 
-# Set working directory to ...
-WORKDIR /app
+# Ajustar permissões
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
 
-# Copy files from current folder to container current folder (set in workdir).
-COPY --chown=www-data:www-data . .
+# Instalar dependências do Laravel
+RUN composer install
 
-# Create laravel caching folders.
-RUN mkdir -p ./storage/framework
-RUN mkdir -p ./storage/framework/{cache, testing, sessions, views}
-RUN mkdir -p ./storage/framework/bootstrap
-RUN mkdir -p ./storage/framework/bootstrap/cache
+# Expor a porta 9000 para comunicação com o Nginx
+EXPOSE 9000
 
-# Adjust user permission & group.
-RUN usermod --uid 1000 www-data
-RUN groupmod --gid 1000  www-data
-
-# Run the entrypoint file.
-RUN chmod +x docker/entrypoint.sh
-ENTRYPOINT [ "docker/entrypoint.sh" ]
+CMD ["php-fpm"]
