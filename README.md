@@ -11,6 +11,8 @@ Antes de tudo é necessário configurar o arquivo .env
 
 Dentro do projeto existe um arquivo .env.example
 
+Basta renomear o .env.example para apenas .env
+
 Para rodar a aplicação execute:
 
 ```bash
