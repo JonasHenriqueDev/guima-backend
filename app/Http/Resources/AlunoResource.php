@@ -30,7 +30,9 @@ class AlunoResource extends UserResource
             'updated_at' => Carbon::parse($user->updated_at)->format('d/m/Y H:i:s'),
             'plano' => $this->plano,
             'vencimento' => Carbon::parse($this->vencimento)->format('d/m/Y'),
-            'status' => $this->status
+            'status' => $this->status,
+            'data_feedback_inicio' => $this->data_feedback_inicio,
+            'data_feedback_fim' => $this->data_feedback_fim
         ];
 
         //dd($arr);

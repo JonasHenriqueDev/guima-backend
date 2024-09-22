@@ -111,7 +111,6 @@ class AulaController extends Controller
             return $this->response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return AulaResource::make($aula);
     }
 
     /**

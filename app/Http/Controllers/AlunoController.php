@@ -26,6 +26,18 @@ class AlunoController extends Controller
         // $this->middleware('auth:sanctum')->except(['store']);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/v1/alunos",
+     *     summary="Listar todos os alunos",
+     *     tags={"Alunos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna a lista de alunos"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     * )
+     */
     public function index()
     {
         try {
@@ -41,6 +53,24 @@ class AlunoController extends Controller
         return AlunosResource::collection($users);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/v1/alunos/{id}",
+     *     summary="Mostrar um aluno especifico por id",
+     *     tags={"Alunos"},
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o aluno especifico por id"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="Buscar por id",
+     *          required=true,
+     *         ) 
+     * )
+     */
     public function show(string $id)
     {
         try {
@@ -57,6 +87,43 @@ class AlunoController extends Controller
         return new AlunoResource($aluno);
     }
 
+    /**
+     * @OA\Patch(
+     *     path="/api/v1/alunos/{id}",
+     *     summary="Atualizar um aluno especifico por id",
+     *     tags={"Alunos"},
+     *     description="Atualiza os dados de um aluno especifico",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o aluno atualizado"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="name", type="string", example="Joao"),
+     *              @OA\Property(property="birth_date", type="string", example="01-01-2003"),
+     *              @OA\Property(property="cpf", type="string", example="111.111.111-13"),
+     *              @OA\Property(property="email", type="string", example="joao@email.com"),
+     *              @OA\Property(property="address", type="string", example="Rua teste"),
+     *              @OA\Property(property="plano", type="string", example="mensal"),
+     *              @OA\Property(property="vencimento", type="date", example="01-01-2026"),
+     *              @OA\Property(property="status", type="boolean", example="true"),
+     *              @OA\Property(property="data_feedback_inicio", type="date", example="01-01-2024"),
+     *              @OA\Property(property="data_feedback_fim", type="date", example="01-01-2025"),
+     * 
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="Buscar por id",
+     *          required=true,
+     *         )
+     )
+     * )
+     */
     public function update(UpdateAlunoRequest $request, string $id)
     {
         try {
@@ -76,6 +143,25 @@ class AlunoController extends Controller
         return new AlunoResource($aluno);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/alunos/{id}",
+     *     summary="Deletar um aluno especifico por id",
+     *     tags={"Alunos"},
+     *     description="Deleta um aluno especifico por id",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Retorna o aluno deletado"),
+     *     security={
+     *          { "apiAuth": {} }
+     *     },
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="Buscar por id",
+     *          required=true,
+     *         )
+     * )
+     */
     public function destroy(string $id)
     {
         try {

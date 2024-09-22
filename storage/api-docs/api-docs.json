@@ -6,6 +6,159 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/v1/alunos": {
+            "get": {
+                "tags": [
+                    "Alunos"
+                ],
+                "summary": "Listar todos os alunos",
+                "operationId": "9bf7261a9f1659e8fcc37d819026ea4d",
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de alunos"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/alunos/{id}": {
+            "get": {
+                "tags": [
+                    "Alunos"
+                ],
+                "summary": "Mostrar um aluno especifico por id",
+                "operationId": "a5827235a86cf7f6101a78ea358640f9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Buscar por id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o aluno especifico por id"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Alunos"
+                ],
+                "summary": "Deletar um aluno especifico por id",
+                "description": "Deleta um aluno especifico por id",
+                "operationId": "8e96d86e16ac967d998a8b307ad3e457",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Buscar por id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o aluno deletado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Alunos"
+                ],
+                "summary": "Atualizar um aluno especifico por id",
+                "description": "Atualiza os dados de um aluno especifico",
+                "operationId": "8f42457b23308896fc76829f32242d8a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Buscar por id",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Joao"
+                                    },
+                                    "birth_date": {
+                                        "type": "string",
+                                        "example": "01-01-2003"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "example": "111.111.111-13"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "joao@email.com"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Rua teste"
+                                    },
+                                    "plano": {
+                                        "type": "string",
+                                        "example": "mensal"
+                                    },
+                                    "vencimento": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "01-01-2026"
+                                    },
+                                    "status": {
+                                        "type": "boolean",
+                                        "example": "true"
+                                    },
+                                    "data_feedback_inicio": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "01-01-2024"
+                                    },
+                                    "data_feedback_fim": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "01-01-2025"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o aluno atualizado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/anamnese": {
             "get": {
                 "tags": [
@@ -991,6 +1144,151 @@
                 "responses": {
                     "200": {
                         "description": "Retorna mensagem de senha alterada com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/feedbacks": {
+            "get": {
+                "tags": [
+                    "Feedbacks"
+                ],
+                "summary": "Listar todos os feedbacks",
+                "operationId": "9b36d80f44aac6bf53ab2b66f6672379",
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de feedbacks"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Feedbacks"
+                ],
+                "summary": "Criar um novo feedback",
+                "operationId": "12f6213017fbba7d81e17de94baee8de",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "descricao": {
+                                        "type": "string",
+                                        "example": "Feedback de teste"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Feedback criado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/feedbacks/{id}": {
+            "get": {
+                "tags": [
+                    "Feedbacks"
+                ],
+                "summary": "Mostrar um feedback específico por id",
+                "operationId": "4e7415cca8d857378d1b803da00138c1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id do feedback",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o feedback específico por id"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Feedbacks"
+                ],
+                "summary": "Deletar um feedback específico por id",
+                "operationId": "ac5a09104d83e020ca5e65dbb2f65dee",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id do feedback",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Feedback deletado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Feedbacks"
+                ],
+                "summary": "Atualizar um feedback específico por id",
+                "operationId": "d80596b9f9e264aa5de393b4a3bf3810",
+                "parameters": [
+                    {
+                        "name": "feedback",
+                        "in": "path",
+                        "description": "Id do feedback",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "descricao": {
+                                        "type": "string",
+                                        "example": "Feedback de teste"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o feedback atualizado por id"
                     }
                 },
                 "security": [

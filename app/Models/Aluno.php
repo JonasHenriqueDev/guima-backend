@@ -14,7 +14,9 @@ class Aluno extends Model
         'vencimento',
         'status',
         'is_new_user',
-        'anamnese_id'
+        'anamnese_id',
+        'data_feedback_inicio',
+        'data_feedback_fim',
     ];
 
     public function user()
@@ -40,5 +42,10 @@ class Aluno extends Model
     public function anamnese()
     {
         return $this->hasOne(Anamnese::class);
+    }
+
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class);
     }
 }

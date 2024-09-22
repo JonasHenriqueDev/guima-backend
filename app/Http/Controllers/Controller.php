@@ -24,5 +24,7 @@ use Illuminate\Routing\Controller as BaseController;
  */
 class Controller extends BaseController
 {
+    const NOT_FOUND_MSG = 'Aluno não encontrado!';
+    const INTERNAL_SERVER_ERROR = 'Erro interno do servidor!';
     use AuthorizesRequests, ValidatesRequests, HttpResponses;
 }

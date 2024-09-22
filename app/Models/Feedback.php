@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Feedback extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'aluno_id',
+        'is_aprovada',
+        'descricao',
+    ];
+
+    public function aluno()
+    {
+        return $this->belongsTo(Aluno::class);
+    }
+}

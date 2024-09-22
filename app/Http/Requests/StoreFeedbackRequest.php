@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreExercicioRequest extends FormRequest
+class StoreFeedbackRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,6 @@ class StoreExercicioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'is_aprovada' => 'boolean',
-            'data_inicio' => 'date',
-            'data_fim' => 'date',
             'descricao' => 'string',
         ];
     }

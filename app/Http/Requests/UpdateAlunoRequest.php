@@ -31,6 +31,8 @@ class UpdateAlunoRequest extends FormRequest
             'plano' => 'string',
             'vencimento' => 'date',
             'status' => 'boolean',
+            'data_feedback_inicio' => 'date',
+            'data_feedback_fim' => 'date',
         ];
         return $rules;
     }

@@ -10,7 +10,9 @@ use App\Http\Controllers\SubmoduloController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AulaController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ImageController;
+use App\Models\Feedback;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +52,7 @@ Route::prefix('api/v1')->middleware('json.response')->group(function () {
         Route::apiResource('modulos', ModuloController::class);
         Route::apiResource('submodulos', SubmoduloController::class);
         Route::apiResource('aulas', AulaController::class);
+        Route::apiResource('feedbacks', FeedbackController::class);
 
         Route::prefix('anamnese')->group(function () {
             Route::get('/', [AnamneseController::class, 'index']);
