@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Aluno;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,6 +15,12 @@ class FeedbackResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'descricao' => $this->descricao,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'aluno' => AlunoFeedbackResource::make($this->aluno),
+        ];
     }
 }

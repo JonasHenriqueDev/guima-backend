@@ -28,6 +28,8 @@ class MeResource extends JsonResource
                 'vencimento' => Carbon::parse($this->vencimento)->format('d/m/Y'),
                 'status' => $this->status,
                 'profile_type' => class_basename($this->profile_type),
+                'data_feedback_inicio' => $this->data_feedback_inicio,
+                'data_feedback_fim' => $this->data_feedback_fim,
                 'created_at' => Carbon::parse($this->created_at)->format('d/m/Y H:i:s'),
                 'updated_at' => Carbon::parse($this->updated_at)->format('d/m/Y H:i:s'),
             ];

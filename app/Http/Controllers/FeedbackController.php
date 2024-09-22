@@ -161,6 +161,7 @@ class FeedbackController extends Controller
     {
         try {
             $feedback->delete();
+            return $this->response('Feedback deletado com sucesso', Response::HTTP_NO_CONTENT);
         } catch (Exception $e) {
             Log::error(self::INTERNAL_SERVER_ERROR);
             return $this->error(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
