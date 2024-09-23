@@ -349,7 +349,7 @@ class AnamneseController extends Controller
 
         $aluno = Aluno::create($alunoData);
 
-        //$user = $aluno->user()->create($anamnese->toArray() + ['password' => Hash::make($anamnese->cpf)] + ['cpf' => $anamnese->cpf]);
+        $aluno->user()->create($anamnese->toArray() + ['password' => Hash::make($anamnese->cpf)] + ['cpf' => $anamnese->cpf]);
 
         $anamnese->update(['is_aprovada' => true]);
         $anamnese->save();

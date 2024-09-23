@@ -1299,12 +1299,12 @@
             }
         },
         "/api/v1/feedbacks/aprovar/{id}": {
-            "get": {
+            "post": {
                 "tags": [
                     "Feedbacks"
                 ],
                 "summary": "Aprovar um feedback específico por id",
-                "operationId": "41e3fefd7a2af6b615d8021376bf5da6",
+                "operationId": "fffa065a2fc80e53e51c6e254e79ed82",
                 "parameters": [
                     {
                         "name": "id",
@@ -1326,12 +1326,12 @@
             }
         },
         "/api/v1/feedbacks/reprovar/{id}": {
-            "get": {
+            "post": {
                 "tags": [
                     "Feedbacks"
                 ],
                 "summary": "Reprovar um feedback específico por id",
-                "operationId": "8c88363e983a82e54f21f932295808f4",
+                "operationId": "bd80006bd55c28e23b8f0b808d93288f",
                 "parameters": [
                     {
                         "name": "id",

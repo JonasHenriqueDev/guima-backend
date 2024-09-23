@@ -79,6 +79,10 @@ class FeedbackController extends Controller
             return $this->error('Já existe um feedback pendente para este aluno', Response::HTTP_BAD_REQUEST);
         }
 
+        if ($aluno->is_feedback_finalizado) {
+            return $this->error('Feedback deste aluno já foi finalizado.', Response::HTTP_BAD_REQUEST);
+        }
+
 
         $settings = FeedbackSetting::first();
 
@@ -88,6 +92,9 @@ class FeedbackController extends Controller
 
         $data['aluno_id'] = $aluno->id;
         $feedback = Feedback::create($data);
+        $aluno->current_feedback_id = $feedback->id;
+        $aluno->is_feedback_finalizado = true;
+        $aluno->save();
 
         return FeedbackResource::make($feedback);
     }
@@ -190,7 +197,7 @@ class FeedbackController extends Controller
     }
 
     /**
-     * @OA\Get(
+     * @OA\Post(
      *     path="/api/v1/feedbacks/aprovar/{id}",
      *     summary="Aprovar um feedback específico por id",
      *     tags={"Feedbacks"},
@@ -215,6 +222,10 @@ class FeedbackController extends Controller
             return $this->error('Feedback deste aluno já aprovado.', Response::HTTP_BAD_REQUEST);
         }
 
+        $aluno = Aluno::where('id', $feedback->aluno_id)->first();
+        $aluno->is_feedback_finalizado = true;
+        $aluno->save();
+
         $feedback->is_aprovado = true;
         $feedback->save();
 
@@ -222,7 +233,7 @@ class FeedbackController extends Controller
     }
 
     /**
-     * @OA\Get(
+     * @OA\Post(
      *     path="/api/v1/feedbacks/reprovar/{id}",
      *     summary="Reprovar um feedback específico por id",
      *     tags={"Feedbacks"},

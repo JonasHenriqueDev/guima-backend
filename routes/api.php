@@ -56,6 +56,8 @@ Route::prefix('api/v1')->middleware('json.response')->group(function () {
         // Rotas para Feedback
         Route::prefix('feedbacks')->group(function () {
             Route::apiResource('/', FeedbackController::class);
+            Route::post('/aprovar/{id}', [FeedbackController::class, 'aprovarFeedback']);
+            Route::post('/reprovar/{id}', [FeedbackController::class, 'reprovarFeedback']);
             Route::get('/settings', [FeedbackSettingController::class, 'index']);
             Route::post('/settings', [FeedbackSettingController::class, 'store']);
         });
@@ -85,6 +87,10 @@ Route::prefix('api/v1')->middleware('json.response')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/me', [MeController::class, 'me']);
         Route::get('/image', [ImageController::class, 'show']);
+
+        // Rotas para Feedback
+        Route::post('/feedbacks', [FeedbackController::class, 'store']);
+        Route::patch('/feedbacks/{id}', [FeedbackController::class, 'update']);
 
         // Rotas relacionadas a módulos, submodulos e aulas
         Route::prefix('modulos')->group(function () {
