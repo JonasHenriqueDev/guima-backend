@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('feedbacks', function (Blueprint $table) {
+        Schema::create('feedback_settings', function (Blueprint $table) {
             $table->id();
-            $table->boolean('is_aprovado')->default(false);
-            $table->string('descricao')->nullable(true);
-
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->boolean('is_enabled')->default(false);
             $table->timestamps();
-
-            $table->foreignId('aluno_id')->constrained('alunos');
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('feedbacks');
+        Schema::dropIfExists('feedback_settings');
     }
 };

@@ -11,8 +11,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AulaController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\FeedbackSettingController;
 use App\Http\Controllers\ImageController;
 use App\Models\Feedback;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,9 +28,7 @@ use App\Models\Feedback;
 */
 
 Route::get('/', function () {
-    return response()->json([
-        'ping' => 'pong',
-    ]);
+    return Feedback::all();
 });
 
 Route::prefix('api/v1')->middleware('json.response')->group(function () {
@@ -52,8 +52,15 @@ Route::prefix('api/v1')->middleware('json.response')->group(function () {
         Route::apiResource('modulos', ModuloController::class);
         Route::apiResource('submodulos', SubmoduloController::class);
         Route::apiResource('aulas', AulaController::class);
-        Route::apiResource('feedbacks', FeedbackController::class);
 
+        // Rotas para Feedback
+        Route::prefix('feedbacks')->group(function () {
+            Route::apiResource('/', FeedbackController::class);
+            Route::get('/settings', [FeedbackSettingController::class, 'index']);
+            Route::post('/settings', [FeedbackSettingController::class, 'store']);
+        });
+
+        // Rotas para Anamneses
         Route::prefix('anamnese')->group(function () {
             Route::get('/', [AnamneseController::class, 'index']);
             Route::post('/aprovar/{id}', [AnamneseController::class, 'aprovarAnamnese']);
@@ -66,7 +73,6 @@ Route::prefix('api/v1')->middleware('json.response')->group(function () {
             Route::put('{id}', [ModuloController::class, 'update']);
             Route::patch('{id}', [ModuloController::class, 'update']);
             Route::delete('{id}', [ModuloController::class, 'destroy']);
-
 
             Route::apiResource('{moduloId}/submodulos', SubmoduloController::class)->except(['show']);
             Route::get('{moduloId}/submodulos/{submoduloId}', [SubmoduloController::class, 'show']);

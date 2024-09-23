@@ -1298,6 +1298,127 @@
                 ]
             }
         },
+        "/api/v1/feedbacks/aprovar/{id}": {
+            "get": {
+                "tags": [
+                    "Feedbacks"
+                ],
+                "summary": "Aprovar um feedback específico por id",
+                "operationId": "41e3fefd7a2af6b615d8021376bf5da6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id do feedback",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Feedback aprovado com sucesso. O aluno será notificado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/feedbacks/reprovar/{id}": {
+            "get": {
+                "tags": [
+                    "Feedbacks"
+                ],
+                "summary": "Reprovar um feedback específico por id",
+                "operationId": "8c88363e983a82e54f21f932295808f4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id do feedback",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Feedback reprovado com sucesso. O aluno será notificado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/feedbacks/settings": {
+            "get": {
+                "tags": [
+                    "Feedbacks"
+                ],
+                "summary": "Configuração do envio de feedback",
+                "operationId": "929737e0b4c9e8ea93975861cc15f6f7",
+                "responses": {
+                    "200": {
+                        "description": "Retorna a configuração de envio de feedback"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Feedbacks"
+                ],
+                "summary": "Configuração do envio de feedback",
+                "description": "Utilize para atualizar as datas de envio do formulário de feedback e liberar para todos os alunos. Apenas o administrador pode alterar as datas de envio.",
+                "operationId": "75f25d4ea228779c8c6b5f4a08a09db4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "start_date",
+                                    "end_date"
+                                ],
+                                "properties": {
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-01-01"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-01-01"
+                                    },
+                                    "is_enabled": {
+                                        "type": "boolean",
+                                        "example": "true"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Configuração de envio de feedback atualizada com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/image": {
             "get": {
                 "tags": [
