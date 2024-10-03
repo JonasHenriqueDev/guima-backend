@@ -28,7 +28,13 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::get('/', function () {
-    return Feedback::all();
+    return response()->json([
+        'name' => config('app.name'),
+        'api' => 'v1',
+        'status' => 'online',
+        'docs' => config('app.url') . 'api/docs',
+        'userAgent' => request()->userAgent(),
+    ]);
 });
 
 Route::prefix('api/v1')->middleware('json.response')->group(function () {
