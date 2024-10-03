@@ -13,6 +13,7 @@ use App\Http\Controllers\AulaController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FeedbackSettingController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ProtocoloController;
 use App\Models\Feedback;
 use Illuminate\Support\Facades\DB;
 
@@ -54,7 +55,15 @@ Route::prefix('api/v1')->middleware('json.response')->group(function () {
     Route::middleware(['auth:sanctum', 'ability:professor'])->group(function () {
         Route::apiResource('professores', ProfessorController::class);
         Route::apiResource('users', UserController::class);
-        Route::apiResource('alunos', AlunoController::class);
+
+        Route::prefix('alunos')->group(function () {
+            Route::apiResource('/', AlunoController::class);
+            Route::get('protocolos', [ProtocoloController::class, 'index']);
+
+            Route::post('/{alunoId}/protocolos', [ProtocoloController::class, 'store']);
+            Route::post('/{alunoId}/protocolos/reenviar', [ProtocoloController::class, 'resend']);
+        });
+
         Route::apiResource('modulos', ModuloController::class);
         Route::apiResource('submodulos', SubmoduloController::class);
         Route::apiResource('aulas', AulaController::class);
@@ -97,6 +106,14 @@ Route::prefix('api/v1')->middleware('json.response')->group(function () {
         // Rotas para Feedback
         Route::post('/feedbacks', [FeedbackController::class, 'store']);
         Route::patch('/feedbacks/{id}', [FeedbackController::class, 'update']);
+
+        //Rotas para protocolo
+        Route::prefix('protocolos')->group(function () {
+            Route::get('/my', [ProtocoloController::class, 'showMyProtocolos']);
+            Route::post('/aprovar/{id}', [ProtocoloController::class, 'aprovar']);
+            Route::post('/reprovar/{id}', [ProtocoloController::class, 'reprovar']);
+            Route::get('/download/{id}', [ProtocoloController::class, 'download']);
+        });
 
         // Rotas relacionadas a módulos, submodulos e aulas
         Route::prefix('modulos')->group(function () {

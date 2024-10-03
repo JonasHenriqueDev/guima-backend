@@ -48,4 +48,9 @@ class Aluno extends Model
     {
         return $this->hasMany(Feedback::class);
     }
+
+    public function protocolo()
+    {
+        return $this->hasMany(Protocolo::class);
+    }
 }

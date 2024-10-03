@@ -1635,6 +1635,265 @@
                 ]
             }
         },
+        "/api/v1/alunos/protocolos": {
+            "get": {
+                "tags": [
+                    "Protocolos"
+                ],
+                "summary": "Listar todos os protocolos de todos os alunos",
+                "operationId": "ee07529da2397e3bf13d3998601f0c7a",
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de protocolos de todos os alunos"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/protocolos/my": {
+            "get": {
+                "tags": [
+                    "Protocolos"
+                ],
+                "summary": "Listar todos os protocolos do aluno logado",
+                "operationId": "1de97c41b624d211dcd1e401c4a28f35",
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de protocolos do aluno logado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/protocolos/{alunoId}": {
+            "post": {
+                "tags": [
+                    "Protocolos"
+                ],
+                "summary": "Enviar um novo protocolo",
+                "description": "Utilize um Content-Type: multipart/form-data para enviar o PDF do protocolo",
+                "operationId": "5aed4b47438f5b8a4edecbc96811359c",
+                "parameters": [
+                    {
+                        "name": "alunoId",
+                        "in": "path",
+                        "description": "Id do aluno",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "pdf": {
+                                        "type": "file",
+                                        "example": "protocolo.pdf"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Protocolo enviado com sucesso."
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/protocolos/{alunoId}/reenviar": {
+            "post": {
+                "tags": [
+                    "Protocolos"
+                ],
+                "summary": "Reenviar um protocolo",
+                "description": "Utilize um Content-Type: multipart/form-data para enviar o PDF do protocolo",
+                "operationId": "10bee56e4118218889d56a89dccdb632",
+                "parameters": [
+                    {
+                        "name": "alunoId",
+                        "in": "path",
+                        "description": "Id do aluno",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "pdf": {
+                                        "type": "file",
+                                        "example": "protocolo.pdf"
+                                    },
+                                    "justificativa": {
+                                        "type": "string",
+                                        "example": "Motivo do reenvio"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Protocolo reenviado com sucesso. Aguardando aprovação do aluno."
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/protocolos/aprovar/{id}": {
+            "post": {
+                "tags": [
+                    "Protocolos"
+                ],
+                "summary": "Aprovar um protocolo",
+                "description": "Aprovar um protocolo existente.",
+                "operationId": "31a937cf3bee4edd3d7d8a60ec129d0b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do protocolo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Protocolo aprovado com sucesso"
+                    },
+                    "409": {
+                        "description": "Protocolo já foi aprovado"
+                    },
+                    "404": {
+                        "description": "Protocolo não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/protocolos/reprovar/{id}": {
+            "post": {
+                "tags": [
+                    "Protocolos"
+                ],
+                "summary": "Reprovar um protocolo",
+                "description": "Reprovar um protocolo existente com justificativa.",
+                "operationId": "2d32ce2eeeed707d056d97feb4783f77",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do protocolo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "justificativa": {
+                                        "type": "string",
+                                        "example": "Motivo do reenvio"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Protocolo reprovado com sucesso"
+                    },
+                    "409": {
+                        "description": "Protocolo já foi reprovado"
+                    },
+                    "404": {
+                        "description": "Protocolo não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/protocolos/download/{id}": {
+            "get": {
+                "tags": [
+                    "Protocolos"
+                ],
+                "summary": "Baixar um protocolo",
+                "operationId": "9969ef65072c20dd816949559d86677d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do protocolo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o arquivo do protocolo"
+                    },
+                    "404": {
+                        "description": "Arquivo não encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/modulos/{modulo_id}/submodulos": {
             "get": {
                 "tags": [
