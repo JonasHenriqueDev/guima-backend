@@ -8,8 +8,10 @@ use App\Http\Resources\AlunoResource;
 use App\Http\Resources\AlunosResource;
 use App\Models\Aluno;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use OpenApi\Annotations as OA;
@@ -29,19 +31,47 @@ class AlunoController extends Controller
     /**
      * @OA\Get(
      *     path="/api/v1/alunos",
-     *     summary="Listar todos os alunos",
+     *     summary="Listar alunos com vencimento menor que hoje",
      *     tags={"Alunos"},
      *     security={{"bearerAuth": {}}},
-     *     @OA\Response(response="200", description="Retorna a lista de alunos"),
+     *     @OA\Parameter(
+     *         name="pagamento_pendente",
+     *         in="query",
+     *         description="Se true, retorna apenas alunos com vencimento menor que hoje. Se false, retorna apenas alunos com vencimento maior ou igual a hoje. Se não informado, retorna todos os alunos.",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="boolean",
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Retorna a lista de alunos com vencimento menor que a data fornecida ou hoje.",
+     *     ),
      *     security={
      *          { "apiAuth": {} }
      *     },
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $users = User::where('profile_type', 'App\Models\Aluno')->paginate();
+            $pagamento_pendente = $request->query('pagamento_pendente', false);
+
+            $query = User::where('profile_type', 'App\Models\Aluno');
+            $hoje = now();
+            if ($pagamento_pendente === 'true') {
+                $query->whereHas('aluno', function ($query) use ($hoje) {
+                    $query->where('vencimento', '<', $hoje);
+                });
+            }
+            if ($pagamento_pendente === 'false') {
+                $query->whereHas('aluno', function ($query) use ($hoje) {
+                    $query->where('vencimento', '>=', $hoje);
+                });
+            }
+
+            $users = $query->paginate();
+
             Log::info('Alunos listados: ' . json_encode($users));
         } catch (ModelNotFoundException $e) {
             Log::error(self::NOT_FOUND_MSG);
@@ -50,8 +80,10 @@ class AlunoController extends Controller
             Log::error(self::INTERNAL_SERVER_ERROR);
             return $this->response(self::INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+
         return AlunosResource::collection($users);
     }
+
 
     /**
      * @OA\Get(

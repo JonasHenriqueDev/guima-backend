@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Dieta::class);
     }
+
+    public function aluno()
+    {
+        return $this->belongsTo(Aluno::class, 'profile_id');
+    }
 }

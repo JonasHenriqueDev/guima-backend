@@ -11,11 +11,22 @@
                 "tags": [
                     "Alunos"
                 ],
-                "summary": "Listar todos os alunos",
+                "summary": "Listar alunos com vencimento menor que hoje",
                 "operationId": "9bf7261a9f1659e8fcc37d819026ea4d",
+                "parameters": [
+                    {
+                        "name": "pagamento_pendente",
+                        "in": "query",
+                        "description": "Se true, retorna apenas alunos com vencimento menor que hoje. Se false, retorna apenas alunos com vencimento maior ou igual a hoje. Se não informado, retorna todos os alunos.",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Retorna a lista de alunos"
+                        "description": "Retorna a lista de alunos com vencimento menor que a data fornecida ou hoje."
                     }
                 },
                 "security": [
@@ -1642,6 +1653,59 @@
                 ],
                 "summary": "Listar todos os protocolos de todos os alunos",
                 "operationId": "ee07529da2397e3bf13d3998601f0c7a",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filtrar por status do protocolo (ex: aprovado, pendente, reprovado)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cpf",
+                        "in": "query",
+                        "description": "Filtrar pelos protocolos de um aluno com CPF",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "data_inicial",
+                        "in": "query",
+                        "description": "Data inicial para filtrar os protocolos (formato: Y-m-d)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "data_final",
+                        "in": "query",
+                        "description": "Data final para filtrar os protocolos (formato: Y-m-d)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "Direção de ordenação por data (asc ou desc, padrão: asc)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Retorna a lista de protocolos de todos os alunos"

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProtocoloRequest;
 use App\Http\Resources\ProtocoloResource;
 use App\Models\Aluno;
 use App\Models\Protocolo;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProtocoloController extends Controller
@@ -17,19 +18,78 @@ class ProtocoloController extends Controller
      *     path="/api/v1/alunos/protocolos",
      *     summary="Listar todos os protocolos de todos os alunos",
      *     tags={"Protocolos"},
-     *     security={{"bearerAuth": {}}},
+     *     security={{"bearerAuth": {}}}, 
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         description="Filtrar por status do protocolo (ex: aprovado, pendente, reprovado)",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="cpf",
+     *         in="query",
+     *         description="Filtrar pelos protocolos de um aluno com CPF",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="data_inicial",
+     *         in="query",
+     *         description="Data inicial para filtrar os protocolos (formato: Y-m-d)",
+     *         required=false,
+     *         @OA\Schema(type="string", format="date")
+     *     ),
+     *     @OA\Parameter(
+     *         name="data_final",
+     *         in="query",
+     *         description="Data final para filtrar os protocolos (formato: Y-m-d)",
+     *         required=false,
+     *         @OA\Schema(type="string", format="date")
+     *     ),
+     *     @OA\Parameter(
+     *         name="order",
+     *         in="query",
+     *         description="Direção de ordenação por data (asc ou desc, padrão: asc)",
+     *         required=false,
+     *         @OA\Schema(type="string", enum={"asc", "desc"})
+     *     ),
      *     @OA\Response(response="200", description="Retorna a lista de protocolos de todos os alunos"),
      *     security={
      *          { "apiAuth": {} }
      *     },
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        $protocolos = Protocolo::paginate();
+        $query = Protocolo::query();
+
+        if ($request->has('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        if ($request->has('cpf')) {
+            $usuario = User::where('cpf', $request->input('cpf'))->first();
+
+            if ($usuario && $usuario->profile_type == 'App\Models\Aluno') {
+                $query->where('aluno_id', $usuario->profile_id);
+            } else {
+                $query->whereNull('aluno_id');
+            }
+        }
+
+        if ($request->has('data_inicial') && $request->has('data_final')) {
+            $query->whereBetween('created_at', [$request->input('data_inicial'), $request->input('data_final')]);
+        }
+
+        $orderDirection = $request->input('order', 'asc');
+        $query->orderBy('created_at', $orderDirection);
+
+        $protocolos = $query->paginate();
 
         return ProtocoloResource::collection($protocolos);
     }
+
 
     /**
      * @OA\Get(

@@ -31,7 +31,7 @@ class AlunosResource extends JsonResource
             'created_at' => Carbon::parse($this->created_at)->format('d/m/Y H:i:s'),
             'updated_at' => Carbon::parse($this->updated_at)->format('d/m/Y H:i:s'),
             'plano' => $alunos->plano,
-            'vencimento' => Carbon::parse($this->vencimento)->format('d/m/Y'),
+            'vencimento' => Carbon::parse($alunos->vencimento)->format('d/m/Y'),
             'status' => $alunos->status
         ];
     }
