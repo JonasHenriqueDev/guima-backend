@@ -8,6 +8,7 @@ use App\Http\Resources\AnamneseResource;
 use App\Models\Aluno;
 use App\Models\Anamnese;
 use App\Models\User;
+use App\Notifications\PrimeiroAcessoNotification;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -353,6 +354,8 @@ class AnamneseController extends Controller
 
         $anamnese->update(['is_aprovada' => true]);
         $anamnese->save();
+
+        $aluno->user->notify(new PrimeiroAcessoNotification($aluno->user));
         return $this->response('Anamnese aprovada com sucesso', Response::HTTP_OK);
     }
     /**
