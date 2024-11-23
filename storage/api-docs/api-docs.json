@@ -1367,6 +1367,22 @@
                         "required": true
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "motivo_reprovacao": {
+                                        "type": "string",
+                                        "example": "Feedback de teste"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Feedback reprovado com sucesso. O aluno será notificado"

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FeedbackReprovadoRequest;
 use App\Http\Requests\StoreFeedbackRequest;
 use App\Http\Requests\UpdateFeedbackRequest;
 use App\Http\Resources\FeedbackResource;
 use App\Models\Aluno;
 use App\Models\Feedback;
 use App\Models\FeedbackSetting;
+use App\Notifications\FeedbackAprovadoNotification;
+use App\Notifications\FeedbackReprovadoNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Exception;
@@ -229,6 +232,9 @@ class FeedbackController extends Controller
         $feedback->is_aprovado = true;
         $feedback->save();
 
+        //notificar aluno
+        $aluno->user->notify(new FeedbackAprovadoNotification($feedback, $aluno->user));
+
         return $this->response('Feedback aprovado com sucesso. O aluno será notificado', Response::HTTP_OK);
     }
 
@@ -247,16 +253,29 @@ class FeedbackController extends Controller
      *          in="path",
      *          description="Id do feedback",
      *          required=true,
-     *         )
+     *         ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="motivo_reprovacao", type="string", example="Feedback de teste"),
+     *          )
+     *      ),
+     )
+     )
      * )
      */
-    public function reprovarFeedback(string $id)
+    public function reprovarFeedback(FeedbackReprovadoRequest $request, string $id)
     {
         $feedback = Feedback::findOrFail($id);
         $feedback->is_aprovado = false;
         $feedback->save();
 
+        $aluno = Aluno::where('id', $feedback->aluno_id)->first();
+
         //notificar aluno
+        $aluno->user->notify(new FeedbackReprovadoNotification($request->motivo_reprovacao, $aluno->user));
+
         return $this->response('Feedback reprovado com sucesso. O aluno será notificado', Response::HTTP_OK);
     }
 }

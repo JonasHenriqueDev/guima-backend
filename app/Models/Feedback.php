@@ -12,6 +12,8 @@ class Feedback extends Model
     protected $table = 'feedbacks';
 
     protected $fillable = [
+        'motivo_reprovacao',
+
         'aluno_id',
         'is_aprovado',
         'descricao',
