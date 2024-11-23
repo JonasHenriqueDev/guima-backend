@@ -12,6 +12,7 @@ class Anamnese extends Model
     protected $fillable = [
         //status 
         'is_aprovada',
+        'motivo_reprovacao',
 
         // Dados pessoais
         'name',

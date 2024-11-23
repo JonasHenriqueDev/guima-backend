@@ -16,8 +16,7 @@ class PrimeiroAcessoNotification extends Notification
      */
     public function __construct(
         public $user
-    )
-    {
+    ) {
         //
     }
 
@@ -37,13 +36,14 @@ class PrimeiroAcessoNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject('Dados do Primeiro Acesso')
-                    ->greeting('Olá ' . $this->user->name . ',')
-                    ->line('Sua anamnese foi aprovada, agora você pode acessar o sistema.')
-                    ->line('Para acessar o sistema, utilze as credenciais abaixo:')
-                    ->line('Email: ' . $this->user->email)
-                    ->line('Senha: ' . $this->user->cpf)
-                    ->line('Obrigado!');
+            ->subject('Dados do Primeiro Acesso')
+            ->greeting('Olá, ' . $this->user->name . '.')
+            ->line('Sua anamnese foi aprovada, agora você pode acessar o sistema.')
+            ->line('Para acessar o sistema, utilze as credenciais abaixo:')
+            ->line('Email: ' . $this->user->email)
+            ->line('Senha: ' . $this->user->cpf)
+            ->action('Clique aqui para acessar o sistema', url('https://plataforma.teamguima.com/'))
+            ->line('Obrigado!');
     }
 
     /**

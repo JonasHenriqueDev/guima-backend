@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ReprovarAnamneseRequest;
 use App\Http\Requests\StoreAnamneseRequest;
 use App\Http\Requests\UpdateAnamneseRequest;
 use App\Http\Resources\AnamneseResource;
+use App\Mail\AnamneseReprovadaMail;
 use App\Models\Aluno;
 use App\Models\Anamnese;
 use App\Models\User;
+use App\Notifications\AnamneseReprovadaNotification;
 use App\Notifications\PrimeiroAcessoNotification;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -16,6 +19,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class AnamneseController extends Controller
 {
@@ -371,6 +375,13 @@ class AnamneseController extends Controller
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *         type="object",
+     *         @OA\Property(property="motivo_reprovacao", type="string", example="O campo nome é obrigatorio"),
+     *     )
+     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="Anamnese reprovada com sucesso"
@@ -389,11 +400,17 @@ class AnamneseController extends Controller
      * )
      */
 
-    public function reprovarAnamnese(string $id)
+    public function reprovarAnamnese(ReprovarAnamneseRequest $request, string $id)
     {
         $anamnese = Anamnese::where('id', $id)->firstOrFail();
-        $anamnese->update(['is_aprovada' => false]);
+        $anamnese->update([
+            'is_aprovada' => false,
+            'motivo_reprovacao' => $request->motivo_reprovacao
+        ]);
+        
         $anamnese->save();
+        Mail::to($anamnese->email)->send(new AnamneseReprovadaMail($anamnese));
+
         return $this->response('Anamnese reprovada', Response::HTTP_OK);
     }
 }

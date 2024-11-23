@@ -785,6 +785,22 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "motivo_reprovacao": {
+                                        "type": "string",
+                                        "example": "O campo nome é obrigatorio"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Anamnese reprovada com sucesso"
